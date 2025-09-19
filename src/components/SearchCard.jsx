@@ -1,16 +1,30 @@
 import { Search, Heart, Star, User, DollarSign, TrendingUp, PieChart, CreditCard, Building, Wallet, BarChart3, Target, Shield, Zap, Clock, X, Filter } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 
+/**
+ * SearchCard Component - Interactive Financial Dashboard Search Interface
+ * 
+ * Features:
+ * - Real-time fuzzy search with intelligent matching
+ * - Search history and suggestions
+ * - Keyboard navigation support
+ * - Category-based filtering
+ * - Visual feedback with card highlighting
+ */
 function SearchCard() {
-    const [searchTerm, setSearchTerm] = useState('')
-    const [searchHistory, setSearchHistory] = useState([])
-    const [showSuggestions, setShowSuggestions] = useState(false)
-    const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
-    const [selectedCategory, setSelectedCategory] = useState('all')
-    const [showFilters, setShowFilters] = useState(false)
-    const inputRef = useRef(null)
-    const suggestionsRef = useRef(null)
+    // State management for search functionality
+    const [searchTerm, setSearchTerm] = useState('')                    // Current search input
+    const [searchHistory, setSearchHistory] = useState([])              // Recent search terms (max 10)
+    const [showSuggestions, setShowSuggestions] = useState(false)       // Show/hide suggestions dropdown
+    const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1) // Currently selected suggestion
+    const [selectedCategory, setSelectedCategory] = useState('all')     // Active category filter
+    const [showFilters, setShowFilters] = useState(false)               // Show/hide category filters panel
     
+    // Refs for DOM manipulation and event handling
+    const inputRef = useRef(null)          // Search input field reference
+    const suggestionsRef = useRef(null)    // Suggestions dropdown reference
+    
+    // Financial service cards data with search keywords and categories
     const cards = [
         { id: 1, name: "Finance Pro", icon: <DollarSign className="w-12 h-12 text-green-500 mb-2" />, keywords: ["finance", "money", "dollar", "pro"], category: "finance" },
         { id: 2, name: "Stock Tracker", icon: <TrendingUp className="w-12 h-12 text-blue-500 mb-2" />, keywords: ["stock", "tracker", "trending", "up"], category: "investment" },
@@ -24,6 +38,7 @@ function SearchCard() {
         { id: 10, name: "Quick Pay", icon: <Zap className="w-12 h-12 text-yellow-600 mb-2" />, keywords: ["quick", "pay", "fast", "zap"], category: "payments" }
     ]
 
+    // Available categories for filtering
     const categories = [
         { id: 'all', name: 'All Categories' },
         { id: 'finance', name: 'Finance' },
@@ -36,54 +51,67 @@ function SearchCard() {
         { id: 'payments', name: 'Payments' }
     ]
 
-    // Fuzzy search algorithm
+    /**
+     * Fuzzy search algorithm for intelligent text matching
+     * @param {string} str - The string to search in
+     * @param {string} pattern - The search pattern
+     * @returns {Object} - { score: number, matched: boolean }
+     */
     const fuzzyMatch = (str, pattern) => {
         const strLower = str.toLowerCase()
         const patternLower = pattern.toLowerCase()
         
+        // Empty pattern returns no match
         if (patternLower === '') return { score: 0, matched: false }
         
-        // Exact match gets highest score
+        // Exact match gets highest score (100)
         if (strLower === patternLower) return { score: 100, matched: true }
         
-        // Starts with pattern gets high score
+        // Starts with pattern gets high score (90)
         if (strLower.startsWith(patternLower)) return { score: 90, matched: true }
         
-        // Contains pattern gets medium score
+        // Contains pattern gets medium score (70)
         if (strLower.includes(patternLower)) return { score: 70, matched: true }
         
-        // Fuzzy matching with character sequence
-        let patternIdx = 0
-        let consecutive = 0
-        let maxConsecutive = 0
+        // Advanced fuzzy matching with character sequence analysis
+        let patternIdx = 0      // Current position in pattern
+        let consecutive = 0     // Current consecutive matches
+        let maxConsecutive = 0  // Maximum consecutive matches found
         
+        // Iterate through string to find pattern characters in sequence
         for (let i = 0; i < strLower.length && patternIdx < patternLower.length; i++) {
             if (strLower[i] === patternLower[patternIdx]) {
                 patternIdx++
                 consecutive++
                 maxConsecutive = Math.max(maxConsecutive, consecutive)
             } else {
-                consecutive = 0
+                consecutive = 0  // Reset consecutive counter on mismatch
             }
         }
         
+        // If all pattern characters were found, calculate fuzzy score
         if (patternIdx === patternLower.length) {
-            // All pattern characters found
-            const completeness = (patternIdx / patternLower.length) * 50
-            const consecutiveness = (maxConsecutive / patternLower.length) * 30
+            const completeness = (patternIdx / patternLower.length) * 50    // 50% weight for completeness
+            const consecutiveness = (maxConsecutive / patternLower.length) * 30  // 30% weight for consecutive matches
             return { score: completeness + consecutiveness, matched: true }
         }
         
         return { score: 0, matched: false }
     }
 
-    // Generate search suggestions
+    /**
+     * Generate search suggestions based on current input
+     * @returns {Array} - Array of suggestion objects
+     */
     const getSuggestions = () => {
+        // If no search term, return recent search history
         if (!searchTerm.trim()) return searchHistory.slice(0, 5)
         
+        // Get all unique keywords from cards
         const allKeywords = cards.flatMap(card => card.keywords)
         const uniqueKeywords = [...new Set(allKeywords)]
         
+        // Filter keywords that match current search term using fuzzy matching
         return uniqueKeywords
             .filter(keyword => 
                 fuzzyMatch(keyword, searchTerm).matched
@@ -92,24 +120,33 @@ function SearchCard() {
                 text: keyword,
                 type: 'keyword'
             }))
-            .slice(0, 5)
+            .slice(0, 5)  // Limit to 5 suggestions
     }
 
-    // Add to search history
+    /**
+     * Add search term to history (max 10 recent searches)
+     * @param {string} term - Search term to add
+     */
     const addToHistory = (term) => {
         if (term.trim() && !searchHistory.includes(term.trim())) {
             setSearchHistory(prev => [term.trim(), ...prev.slice(0, 9)]) // Keep last 10 searches
         }
     }
 
-    // Handle search input
+    /**
+     * Handle search input changes
+     * @param {string} value - New input value
+     */
     const handleSearchChange = (value) => {
         setSearchTerm(value)
-        setShowSuggestions(value.length > 0)
-        setSelectedSuggestionIndex(-1)
+        setShowSuggestions(value.length > 0)  // Show suggestions only when typing
+        setSelectedSuggestionIndex(-1)        // Reset selection
     }
 
-    // Handle search submission
+    /**
+     * Handle search submission
+     * @param {string} term - Search term (defaults to current searchTerm)
+     */
     const handleSearch = (term = searchTerm) => {
         if (term.trim()) {
             addToHistory(term.trim())
@@ -119,60 +156,74 @@ function SearchCard() {
         }
     }
 
-    // Handle keyboard navigation
+    /**
+     * Handle keyboard navigation for suggestions dropdown
+     * @param {KeyboardEvent} e - Keyboard event
+     */
     const handleKeyDown = (e) => {
         const suggestions = getSuggestions()
         
         if (e.key === 'ArrowDown') {
             e.preventDefault()
+            // Move down in suggestions list
             setSelectedSuggestionIndex(prev => 
                 prev < suggestions.length - 1 ? prev + 1 : prev
             )
         } else if (e.key === 'ArrowUp') {
             e.preventDefault()
+            // Move up in suggestions list
             setSelectedSuggestionIndex(prev => prev > 0 ? prev - 1 : -1)
         } else if (e.key === 'Enter') {
             e.preventDefault()
+            // Select suggestion or perform search
             if (selectedSuggestionIndex >= 0 && suggestions[selectedSuggestionIndex]) {
                 handleSearch(suggestions[selectedSuggestionIndex].text)
             } else {
                 handleSearch()
             }
         } else if (e.key === 'Escape') {
+            // Close suggestions and blur input
             setShowSuggestions(false)
             setSelectedSuggestionIndex(-1)
             inputRef.current?.blur()
         }
     }
 
+    /**
+     * Get cards that match current search term and category filter
+     * @returns {Array} - Array of cards with match information
+     */
     const getMatchingCards = () => {
         let filteredCards = cards
         
-        // Filter by category
+        // Apply category filter first
         if (selectedCategory !== 'all') {
             filteredCards = cards.filter(card => card.category === selectedCategory)
         }
         
+        // If no search term, return all filtered cards
         if (!searchTerm.trim()) return filteredCards
         
+        // Apply fuzzy search to filtered cards
         return filteredCards.map(card => {
-            let bestMatch = null
-            let bestScore = 0
-            let totalScore = 0
+            let bestMatch = null    // Best matching keyword
+            let bestScore = 0      // Highest individual match score
+            let totalScore = 0     // Combined score for ranking
             
-            // Check card name
+            // Check card name match (weighted 2x higher than keywords)
             const nameMatch = fuzzyMatch(card.name, searchTerm)
             if (nameMatch.matched) {
                 bestScore = Math.max(bestScore, nameMatch.score)
-                totalScore += nameMatch.score * 2 // Weight name matches higher
+                totalScore += nameMatch.score * 2 // Name matches are more important
             }
             
-            // Check keywords
+            // Check all keywords for matches
             const keywordMatches = card.keywords.map(keyword => {
                 const match = fuzzyMatch(keyword, searchTerm)
                 if (match.matched) {
                     bestScore = Math.max(bestScore, match.score)
                     totalScore += match.score
+                    // Track the best matching keyword
                     if (match.score === bestScore) {
                         bestMatch = keyword
                     }
@@ -182,20 +233,25 @@ function SearchCard() {
             
             return {
                 ...card,
-                matchScore: totalScore,
-                bestMatch: bestMatch,
+                matchScore: totalScore,     // Total score for sorting
+                bestMatch: bestMatch,       // Best matching keyword for display
                 hasMatch: keywordMatches.length > 0 || nameMatch.matched
             }
         }).sort((a, b) => {
+            // Sort: matching cards first, then by score
             if (a.hasMatch && !b.hasMatch) return -1
             if (!a.hasMatch && b.hasMatch) return 1
             return b.matchScore - a.matchScore
         })
     }
 
-    // Close suggestions when clicking outside
+    /**
+     * Close suggestions dropdown when clicking outside
+     * Uses useEffect to add/remove event listener
+     */
     useEffect(() => {
         const handleClickOutside = (event) => {
+            // Close suggestions if click is outside both input and suggestions
             if (suggestionsRef.current && !suggestionsRef.current.contains(event.target) && 
                 inputRef.current && !inputRef.current.contains(event.target)) {
                 setShowSuggestions(false)
@@ -208,8 +264,9 @@ function SearchCard() {
         }
     }, [])
 
+    // Get filtered and matched cards
     const matchingCards = getMatchingCards()
-    const topMatch = matchingCards.find(card => card.hasMatch)
+    const topMatch = matchingCards.find(card => card.hasMatch)  // Best matching card for special highlighting
 
     return (
         <div className='flex flex-col items-center justify-center min-h-screen p-4'>
@@ -228,7 +285,7 @@ function SearchCard() {
                             onFocus={() => setShowSuggestions(true)}
                         />
                         
-                        {/* Search Suggestions Dropdown */}
+                        {/* Search Suggestions Dropdown - Shows matching keywords and recent searches */}
                         {showSuggestions && (
                             <div 
                                 ref={suggestionsRef}
@@ -244,6 +301,7 @@ function SearchCard() {
                                         }`}
                                         onClick={() => handleSearch(suggestion.text)}
                                     >
+                                        {/* Icon: Search for keywords, Clock for recent searches */}
                                         {suggestion.type === 'keyword' ? (
                                             <Search className="w-4 h-4 text-gray-500" />
                                         ) : (
@@ -256,6 +314,7 @@ function SearchCard() {
                         )}
                     </div>
                     
+                    {/* Search Button - Triggers search action */}
                     <button 
                         className='bg-gray-700 text-white rounded-md p-2 w-12 flex justify-center items-center hover:bg-slate-600'
                         onClick={() => handleSearch()}
@@ -263,6 +322,7 @@ function SearchCard() {
                         <Search />
                     </button>
                     
+                    {/* Filter Toggle Button - Shows/hides category filters */}
                     <button 
                         className='bg-blue-600 text-white rounded-md p-3 w-12 flex justify-center items-center hover:bg-blue-700'
                         onClick={() => setShowFilters(!showFilters)}
@@ -273,7 +333,7 @@ function SearchCard() {
 
                 </div>
                 
-                {/* Search History */}
+                {/* Search History - Shows recent searches when not showing suggestions */}
                 {searchHistory.length > 0 && !showSuggestions && (
                     <div className='mt-2 flex flex-wrap gap-2'>
                         <span className='text-sm text-gray-600'>Recent:</span>
@@ -291,7 +351,7 @@ function SearchCard() {
                 )}
             </div>
             
-            {/* Category Filters */}
+            {/* Category Filters Panel - Expandable filter options */}
             {showFilters && (
                 <div className='mt-4 w-full max-w-4xl'>
                     <div className='bg-white border border-gray-300 rounded-lg p-4 shadow-lg'>
@@ -314,9 +374,10 @@ function SearchCard() {
                     </div>
                 </div>
             )}
-            {/* Cards Grid */}
+            {/* Cards Grid - Main content area with search results */}
             <div className='flex flex-row items-center justify-center mt-20 flex-wrap gap-8'>
                 {matchingCards.length === 0 ? (
+                    /* Empty State - When no cards match search/filter criteria */
                     <div className='text-center py-12'>
                         <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                         <h3 className='text-xl font-semibold text-gray-600 mb-2'>No cards found</h3>
@@ -336,9 +397,10 @@ function SearchCard() {
                         )}
                     </div>
                 ) : (
+                    /* Card Results - Render matching cards with visual feedback */
                     matchingCards.map((card) => {
-                     const isTopMatch = topMatch && card.id === topMatch.id
-                     const isMatching = card.hasMatch
+                     const isTopMatch = topMatch && card.id === topMatch.id  // Best matching card
+                     const isMatching = card.hasMatch                        // Any match found
                      
                      return (
                          <div 
@@ -351,17 +413,19 @@ function SearchCard() {
                                          : 'border-gray-200 opacity-50 hover:opacity-70'
                              } hover:shadow-2xl hover:scale-105`}
                          >
-                             {/* Matching letter indicator */}
+                             {/* Matching Letter Indicator - Shows first letter of best match */}
                              {isTopMatch && card.bestMatch && (
                                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-sm font-bold shadow-lg">
                                      {card.bestMatch.charAt(0).toUpperCase()}
                                  </div>
                              )}
                              
-                             {/* Card content */}
+                             {/* Card Icon with Animation */}
                              <div className={`${isTopMatch ? 'animate-pulse' : ''}`}>
                                  {card.icon}
                              </div>
+                             
+                             {/* Card Name with Color-coded Text */}
                              <p className={`font-semibold ${
                                  isTopMatch 
                                      ? 'text-yellow-800' 
