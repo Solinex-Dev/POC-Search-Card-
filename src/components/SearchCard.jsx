@@ -27,16 +27,16 @@ function SearchCard() {
     
     // Financial service cards data with search keywords and categories
     const cards = [
-        { id: 1, name: "Finance Pro", icon: <DollarSign className="w-12 h-12 text-green-500 mb-2" />, keywords: ["finance", "money", "dollar", "pro"], category: "finance" },
-        { id: 2, name: "Stock Tracker", icon: <TrendingUp className="w-12 h-12 text-blue-500 mb-2" />, keywords: ["stock", "tracker", "trending", "up"], category: "investment" },
-        { id: 3, name: "Portfolio", icon: <PieChart className="w-12 h-12 text-purple-500 mb-2" />, keywords: ["portfolio", "chart", "pie", "investment"], category: "investment" },
-        { id: 4, name: "Credit Score", icon: <CreditCard className="w-12 h-12 text-yellow-500 mb-2" />, keywords: ["credit", "score", "card", "payment"], category: "credit" },
-        { id: 5, name: "Real Estate", icon: <Building className="w-12 h-12 text-orange-500 mb-2" />, keywords: ["real", "estate", "building", "property"], category: "investment" },
-        { id: 6, name: "Savings", icon: <Wallet className="w-12 h-12 text-pink-500 mb-2" />, keywords: ["savings", "wallet", "money", "store"], category: "savings" },
-        { id: 7, name: "Analytics", icon: <BarChart3 className="w-12 h-12 text-cyan-500 mb-2" />, keywords: ["analytics", "chart", "data", "analysis"], category: "analytics" },
-        { id: 8, name: "Goals", icon: <Target className="w-12 h-12 text-red-500 mb-2" />, keywords: ["goals", "target", "aim", "objective"], category: "planning" },
-        { id: 9, name: "Security", icon: <Shield className="w-12 h-12 text-indigo-500 mb-2" />, keywords: ["security", "shield", "protect", "safe"], category: "security" },
-        { id: 10, name: "Quick Pay", icon: <Zap className="w-12 h-12 text-yellow-600 mb-2" />, keywords: ["quick", "pay", "fast", "zap"], category: "payments" }
+        { id: 1, name: "Finance Pro", icon: <DollarSign className="w-12 h-12 text-green-500 mb-2" />, keywords: ["finance", "money", "dollar", "pro"], category: "finance", description: "Professional money tracking and analysis." },
+        { id: 2, name: "Stock Tracker", icon: <TrendingUp className="w-12 h-12 text-blue-500 mb-2" />, keywords: ["stock", "tracker", "trending", "up"], category: "investment", description: "Real-time stock monitoring with alerts." },
+        { id: 3, name: "Portfolio", icon: <PieChart className="w-12 h-12 text-purple-500 mb-2" />, keywords: ["portfolio", "chart", "pie", "investment"], category: "investment", description: "Interactive portfolio visualization." },
+        { id: 4, name: "Credit Score", icon: <CreditCard className="w-12 h-12 text-yellow-500 mb-2" />, keywords: ["credit", "score", "card", "payment"], category: "credit", description: "Credit monitoring and improvement." },
+        { id: 5, name: "Real Estate", icon: <Building className="w-12 h-12 text-orange-500 mb-2" />, keywords: ["real", "estate", "building", "property"], category: "investment", description: "Property investment tracking." },
+        { id: 6, name: "Savings", icon: <Wallet className="w-12 h-12 text-pink-500 mb-2" />, keywords: ["savings", "wallet", "money", "store"], category: "savings", description: "Smart savings goal tracking." },
+        { id: 7, name: "Analytics", icon: <BarChart3 className="w-12 h-12 text-cyan-500 mb-2" />, keywords: ["analytics", "chart", "data", "analysis"], category: "analytics", description: "Advanced financial insights." },
+        { id: 8, name: "Goals", icon: <Target className="w-12 h-12 text-red-500 mb-2" />, keywords: ["goals", "target", "aim", "objective"], category: "planning", description: "Financial goal tracking." },
+        { id: 9, name: "Security", icon: <Shield className="w-12 h-12 text-indigo-500 mb-2" />, keywords: ["security", "shield", "protect", "safe"], category: "security", description: "Bank-level data protection." },
+        { id: 10, name: "Quick Pay", icon: <Zap className="w-12 h-12 text-yellow-600 mb-2" />, keywords: ["quick", "pay", "fast", "zap"], category: "payments", description: "Lightning-fast payments." }
     ]
 
     // Available categories for filtering
@@ -304,287 +304,232 @@ function SearchCard() {
     }
 
     return (
-        <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6'>
-            {/* Header Section - Goal-oriented messaging like TurboTax */}
-            <div className='text-center mb-8'>
-                <h1 className='text-4xl font-bold text-gray-800 mb-2'>
-                    Find Your Perfect Financial Tool
-                </h1>
-                <p className='text-lg text-gray-600 mb-4'>
-                    Discover the right financial services to maximize your money management
-                </p>
-                
-                {/* Personality touch - Like TurboTax's "How are you feeling?" */}
-                <div className='bg-blue-50 rounded-xl p-4 max-w-md mx-auto'>
-                    <p className='text-sm text-blue-800 font-medium'>
-                        💡 <strong>Quick tip:</strong> The more specific you are, the better we can help you find exactly what you need!
-                    </p>
+        <div className='flex flex-col items-center justify-center'>
+            {/* Hero Section */}
+            <div className='text-center max-w-4xl px-6 py-6'>
+                <div className='mb-4'>
+                    <h1 className='text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent mb-3 leading-tight'>
+                        Financial Dashboard
+                    </h1>
+                    <div className='w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-4'></div>
                 </div>
-                
-                {/* Progress Indicator - Like TurboTax's step tracking */}
-                <div className='flex justify-center items-center space-x-2 mb-8'>
-                    <div className='flex items-center space-x-2'>
-                        <div className='w-3 h-3 bg-blue-500 rounded-full'></div>
-                        <span className='text-sm text-gray-600'>Search</span>
+                <p className='text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto mb-4'>
+                    Discover powerful financial tools designed to help you manage and optimize your money.
+                </p>
+                <div className='flex flex-wrap justify-center gap-3'>
+                    <div className='flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-full'>
+                        <div className='w-1.5 h-1.5 bg-blue-500 rounded-full'></div>
+                        <span className='text-blue-700 font-medium text-sm'>Real-time Tracking</span>
                     </div>
-                    <div className='w-8 h-0.5 bg-gray-300'></div>
-                    <div className='flex items-center space-x-2'>
-                        <div className='w-3 h-3 bg-gray-300 rounded-full'></div>
-                        <span className='text-sm text-gray-400'>Select</span>
+                    <div className='flex items-center gap-2 bg-purple-50 px-3 py-1 rounded-full'>
+                        <div className='w-1.5 h-1.5 bg-purple-500 rounded-full'></div>
+                        <span className='text-purple-700 font-medium text-sm'>Smart Analytics</span>
                     </div>
-                    <div className='w-8 h-0.5 bg-gray-300'></div>
-                    <div className='flex items-center space-x-2'>
-                        <div className='w-3 h-3 bg-gray-300 rounded-full'></div>
-                        <span className='text-sm text-gray-400'>Get Started</span>
+                    <div className='flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full'>
+                        <div className='w-1.5 h-1.5 bg-green-500 rounded-full'></div>
+                        <span className='text-green-700 font-medium text-sm'>Secure & Reliable</span>
                     </div>
                 </div>
             </div>
-
-            {/* Search Section - Clean, focused design */}
-            <div className='max-w-4xl mx-auto'>
-                <div className='bg-white rounded-2xl shadow-xl p-8 mb-8'>
-                    <h2 className='text-2xl font-semibold text-gray-800 mb-4 text-center'>
-                        What financial service are you looking for?
-                    </h2>
-                    
-                    <div className='relative'>
-                        <input 
-                            ref={inputRef}
-                            className='w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100 transition-all duration-300 bg-gray-50 focus:bg-white' 
-                            type="search" 
-                            placeholder="Type what you need help with..." 
-                            value={searchTerm}
-                            onChange={(e) => handleSearchChange(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            onFocus={() => setShowSuggestions(true)}
-                        />
-                        <div className='absolute right-4 top-1/2 transform -translate-y-1/2'>
-                            <Search className='w-6 h-6 text-gray-400' />
+            {/* Search Bar with Suggestions */}
+            <div className='relative w-full max-w-2xl'>
+                <div className='flex flex-row items-center justify-center gap-3'>
+                    <div className='relative flex-1'>
+                        {/* Input Group with Search Button Inside */}
+                        <div className='relative'>
+                            <input  
+                                ref={inputRef}
+                                className='border-2 border-gray-300 bg-white h-12 focus:text-gray-800 focus:outline-blue-500 focus:outline-none rounded-lg p-2 pr-12 w-full text-gray-600 shadow-sm hover:shadow-md transition-shadow' 
+                                type="search" 
+                                placeholder="Search cards..." 
+                                value={searchTerm}
+                                onChange={(e) => handleSearchChange(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                onFocus={() => setShowSuggestions(true)}
+                            />
+                            {/* Search Button - Positioned inside input on the right */}
+                            <button 
+                                className='absolute right-1 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-md p-2 w-20 h-10 flex justify-center items-center shadow-md hover:shadow-lg transition-all duration-300'
+                                onClick={() => handleSearch()}
+                            >
+                                <Search className="w-4 h-4" />
+                            </button>
                         </div>
                         
-                        {/* Search Suggestions Dropdown - TurboTax style */}
+                        
+                        {/* Search Suggestions Dropdown - Shows matching keywords and recent searches */}
                         {showSuggestions && (
                             <div 
                                 ref={suggestionsRef}
-                                className='absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-2xl z-50 mt-2 max-h-60 overflow-y-auto'
+                                className='absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md shadow-lg z-50 mt-1 max-h-60 overflow-y-auto text-slate-500'
                             >
-                                {getSuggestions().length > 0 ? (
-                                    getSuggestions().map((suggestion, index) => (
-                                        <div
-                                            key={index}
-                                            className={`p-4 cursor-pointer flex items-center gap-3 border-b border-gray-100 last:border-b-0 ${
-                                                index === selectedSuggestionIndex 
-                                                    ? 'bg-blue-50 text-blue-800' 
-                                                    : 'hover:bg-gray-50'
-                                            }`}
-                                            onClick={() => handleSearch(suggestion.text)}
-                                        >
-                                            <div className='w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center'>
-                                                {suggestion.type === 'keyword' ? (
-                                                    <Search className="w-4 h-4 text-blue-600" />
-                                                ) : (
-                                                    <Clock className="w-4 h-4 text-blue-600" />
-                                                )}
-                                            </div>
-                                            <div>
-                                                <div className='font-medium text-gray-800'>{suggestion.text}</div>
-                                                <div className='text-sm text-gray-500'>
-                                                    {suggestion.type === 'keyword' ? 'Popular search' : 'Recent search'}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div className='p-6 text-center text-gray-500'>
-                                        <Search className='w-8 h-8 mx-auto mb-2 text-gray-300' />
-                                        <p>Start typing to see suggestions...</p>
+                                {getSuggestions().map((suggestion, index) => (
+                                    <div
+                                        key={index}
+                                        className={`p-3 cursor-pointer flex items-center gap-2 ${
+                                            index === selectedSuggestionIndex 
+                                                ? 'bg-blue-100 text-blue-800' 
+                                                : 'hover:bg-gray-100'
+                                        }`}
+                                        onClick={() => handleSearch(suggestion.text)}
+                                    >
+                                        {/* Icon: Search for keywords, Clock for recent searches */}
+                                        {suggestion.type === 'keyword' ? (
+                                            <Search className="w-4 h-4 text-gray-500" />
+                                        ) : (
+                                            <Clock className="w-4 h-4 text-gray-500" />
+                                        )}
+                                        <span>{suggestion.text}</span>
                                     </div>
-                                )}
+                                ))}
                             </div>
                         )}
+                        
                     </div>
                     
-                    {/* Action Buttons */}
-                    <div className='flex justify-center gap-4 mt-6'>
-                        <button 
-                            className='bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2'
-                            onClick={() => handleSearch()}
-                        >
-                            <Search className="w-5 h-5" />
-                            Find My Tools
-                        </button>
-                        
-                        <button 
-                            className='bg-gray-100 text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-gray-200 transition-colors duration-200 flex items-center gap-2'
-                            onClick={() => setShowFilters(!showFilters)}
-                        >
-                            <Filter className="w-5 h-5" />
-                            {showFilters ? 'Hide Filters' : 'Show Filters'}
-                        </button>
-                    </div>
+                    
+
+                    
+                    {/* Filter Toggle Button - Shows/hides category filters */}
+                    <button 
+                        className='bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg p-3 w-14 h-12 flex justify-center items-center shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105'
+                        onClick={() => setShowFilters(!showFilters)}
+                    >
+                        <Filter className="w-5 h-5" />
+                    </button>
+                    
+
                 </div>
                 
-                {/* Search History - TurboTax style recent searches */}
+                {/* Search History - Shows recent searches when not showing suggestions */}
                 {searchHistory.length > 0 && !showSuggestions && (
-                    <div className='bg-white rounded-xl p-6 shadow-lg mb-6'>
-                        <h3 className='text-lg font-semibold text-gray-800 mb-4'>Recent Searches</h3>
-                        <div className='flex flex-wrap gap-3'>
-                            {searchHistory.slice(0, 5).map((term, index) => (
-                                <button
-                                    key={index}
-                                    className='bg-blue-50 text-blue-700 hover:bg-blue-100 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center gap-2'
-                                    onClick={() => handleSearch(term)}
-                                >
-                                    <Clock className="w-4 h-4" />
-                                    {term}
-                                </button>
-                            ))}
-                        </div>
+                    <div className='mt-2 flex flex-wrap gap-2'>
+                        <span className='text-sm text-gray-600'>Recent:</span>
+                        {searchHistory.slice(0, 5).map((term, index) => (
+                            <button
+                                key={index}
+                                className='text-xs bg-gray-200 text-slate-600 hover:bg-gray-300 px-2 py-1 rounded-full flex items-center gap-1'
+                                onClick={() => handleSearch(term)}
+                            >
+                                <Clock className="w-3 h-3" />
+                                {term}
+                            </button>
+                        ))}
                     </div>
                 )}
-                
-                {/* Category Filters Panel - TurboTax style */}
-                {showFilters && (
-                    <div className='bg-white rounded-2xl p-8 shadow-xl mb-8'>
-                        <h3 className='text-2xl font-semibold text-gray-800 mb-6 text-center'>
-                            What type of financial help do you need?
-                        </h3>
-                        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+            </div>
+            
+            {/* Category Filters Panel - Expandable filter options */}
+            {showFilters && (
+                <div className='mt-6 w-full max-w-5xl'>
+                    <div className='bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-xl'>
+                        <div className='flex items-center gap-3 mb-4'>
+                            <Filter className="w-5 h-5 text-blue-600" />
+                            <h3 className='text-xl font-bold text-gray-800'>Filter by Category</h3>
+                        </div>
+                        <div className='flex flex-wrap gap-3'>
                             {categories.map(category => (
                                 <button
                                     key={category.id}
-                                    className={`p-6 rounded-xl text-center transition-all duration-200 ${
+                                    className={`px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg ${
                                         selectedCategory === category.id
-                                            ? 'bg-blue-600 text-white shadow-lg transform scale-105'
-                                            : 'bg-gray-50 text-gray-700 hover:bg-gray-100 hover:shadow-md'
+                                            ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                                            : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 hover:border-blue-300'
                                     }`}
                                     onClick={() => setSelectedCategory(category.id)}
                                 >
-                                    <div className='font-semibold text-lg'>{category.name}</div>
-                                    <div className='text-sm opacity-75 mt-1'>
-                                        {category.id === 'all' ? 'All services' : `${category.name} tools`}
-                                    </div>
+                                    {category.name}
                                 </button>
                             ))}
                         </div>
                     </div>
-                )}
-                {/* Results Section - TurboTax style results */}
-                <div className='bg-white rounded-2xl shadow-xl p-8'>
-                    {matchingCards.length === 0 ? (
-                        /* Empty State - TurboTax style */
-                        <div className='text-center py-16'>
-                            <div className='w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6'>
-                                <Search className="w-12 h-12 text-gray-400" />
-                            </div>
-                            <h3 className='text-2xl font-semibold text-gray-800 mb-3'>
-                                {searchTerm ? `No results for "${searchTerm}"` : 'Ready to find your financial tools?'}
-                            </h3>
-                            <p className='text-lg text-gray-600 mb-8 max-w-md mx-auto'>
-                                {searchTerm 
-                                    ? "Try a different search term or browse our categories below"
-                                    : "Start by typing what you need help with in the search box above"
-                                }
-                            </p>
-                            {searchTerm && (
-                                <button
-                                    className='bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors duration-200'
-                                    onClick={() => {
-                                        setSearchTerm('')
-                                        setSelectedCategory('all')
-                                    }}
-                                >
-                                    Clear Search & Start Over
-                                </button>
-                            )}
-                        </div>
-                    ) : (
-                        /* Results Header - Like TurboTax's progress indicators */
-                        <div className='mb-8'>
-                            <div className='flex items-center justify-between mb-4'>
-                                <h3 className='text-2xl font-semibold text-gray-800'>
-                                    {searchTerm ? `Found ${matchingCards.length} financial tools` : 'All Financial Tools'}
-                                </h3>
-                                {topMatch && (
-                                    <div className='bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium'>
-                                        ✨ Best Match: {topMatch.name}
-                                    </div>
-                                )}
-                            </div>
-                            
-                            {/* Results Grid - TurboTax card style */}
-                            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
-                                {matchingCards.map((card, index) => {
-                                    const isTopMatch = topMatch && card.id === topMatch.id
-                                    const isMatching = card.hasMatch
-                                    const animationClass = getCardAnimation(card.id, index)
-                                    
-                                    return (
-                                        <div 
-                                            key={card.id}
-                                            className={`bg-white border-2 rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative ${
-                                                isTopMatch 
-                                                    ? 'border-green-400 shadow-green-200 shadow-2xl bg-gradient-to-br from-green-50 to-white' 
-                                                    : isMatching 
-                                                        ? 'border-blue-200 shadow-blue-100 shadow-lg' 
-                                                        : 'border-gray-200 hover:border-gray-300'
-                                            } ${animationClass}`}
-                                            style={{
-                                                animationDelay: `${index * 50}ms`,
-                                            }}
-                                        >
-                                            {/* Best Match Badge */}
-                                            {isTopMatch && (
-                                                <div className="absolute -top-2 -right-2 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
-                                                    Best Match
-                                                </div>
-                                            )}
-                                            
-                                            {/* Card Content */}
-                                            <div className='text-center'>
-                                                <div className='w-16 h-16 mx-auto mb-4 flex items-center justify-center'>
-                                                    {card.icon}
-                                                </div>
-                                                
-                                                <h4 className={`text-lg font-semibold mb-2 ${
-                                                    isTopMatch 
-                                                        ? 'text-green-800' 
-                                                        : isMatching 
-                                                            ? 'text-blue-800' 
-                                                            : 'text-gray-800'
-                                                }`}>
-                                                    {card.name}
-                                                </h4>
-                                                
-                                                <p className='text-sm text-gray-600 mb-4'>
-                                                    {card.category === 'finance' && 'Manage your money and finances'}
-                                                    {card.category === 'investment' && 'Grow your wealth and investments'}
-                                                    {card.category === 'credit' && 'Monitor and improve your credit'}
-                                                    {card.category === 'savings' && 'Save money and reach your goals'}
-                                                    {card.category === 'analytics' && 'Analyze your financial data'}
-                                                    {card.category === 'planning' && 'Plan for your financial future'}
-                                                    {card.category === 'security' && 'Protect your financial information'}
-                                                    {card.category === 'payments' && 'Process payments quickly and securely'}
-                                                </p>
-                                                
-                                                <button className={`w-full py-2 px-4 rounded-xl font-medium transition-colors duration-200 ${
-                                                    isTopMatch
-                                                        ? 'bg-green-600 text-white hover:bg-green-700'
-                                                        : isMatching
-                                                            ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                                }`}>
-                                                    {isTopMatch ? 'Get Started' : 'Learn More'}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        </div>
-                    )}
                 </div>
+            )}
+            {/* Cards Grid - Main content area with search results */}
+            <div className='flex flex-row items-center justify-center mt-6 flex-wrap gap-6 '>
+                {matchingCards.length === 0 ? (
+                    /* Empty State - When no cards match search/filter criteria */
+                    <div className='text-center py-12 '>
+                        <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                        <h3 className='text-xl font-semibold text-gray-600 mb-2'>No cards found</h3>
+                        <p className='text-gray-500 mb-4'>
+                            {searchTerm ? `No cards match "${searchTerm}"` : 'No cards available'}
+                        </p>
+                        {searchTerm && (
+                            <button
+                                className='bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700'
+                                onClick={() => {
+                                    setSearchTerm('')
+                                    setSelectedCategory('all')
+                                }}
+                            >
+                                Clear search
+                            </button>
+                        )}
+                    </div>
+                ) : (
+                    /* Card Results - Render matching cards with visual feedback */
+                    matchingCards.map((card, index) => {
+                     const isTopMatch = topMatch && card.id === topMatch.id  // Best matching card
+                     const isMatching = card.hasMatch                        // Any match found
+                     const animationClass = getCardAnimation(card.id, index)  // Get animation type
+                     
+                     return (
+                         <div 
+                             key={card.id}
+                             className={`bg-white border-2 rounded-md p-2 w-52 h-52 flex items-center justify-center flex-col cursor-pointer transition-all duration-500 ease-in-out shadow-lg relative transform ${
+                                 isTopMatch 
+                                     ? 'border-yellow-400 shadow-yellow-200 shadow-2xl scale-105 bg-gradient-to-br from-yellow-50 to-white' 
+                                     : isMatching 
+                                         ? 'border-blue-300 shadow-blue-200 shadow-xl scale-102' 
+                                         : 'border-gray-200 opacity-50 hover:opacity-70'
+                             } hover:shadow-2xl hover:scale-105 ${animationClass}`}
+                             style={{
+                                 animationDelay: `${index * 30}ms`, // Staggered animation delay
+                             }}
+                         >
+                             {/* Matching Letter Indicator - Shows first letter of best match */}
+                             {isTopMatch && card.bestMatch && (
+                                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-sm font-bold shadow-lg">
+                                     {card.bestMatch.charAt(0).toUpperCase()}
+                                 </div>
+                             )}
+                             
+                             {/* Card Icon with Animation */}
+                             <div className={`${isTopMatch ? 'animate-pulse' : ''}`}>
+                                 {card.icon}
+                             </div>
+                             
+                             {/* Card Name with Color-coded Text */}
+                             <p className={`font-semibold text-center ${
+                                 isTopMatch 
+                                     ? 'text-yellow-800' 
+                                     : isMatching 
+                                         ? 'text-blue-800' 
+                                         : 'text-gray-600'
+                             }`}>
+                                 {card.name}
+                             </p>
+                             <p className={`text-xs mt-2 text-center px-2 leading-tight ${
+                                 isTopMatch 
+                                     ? 'text-yellow-700' 
+                                     : isMatching 
+                                         ? 'text-blue-700' 
+                                         : 'text-gray-500'
+                             }`}>
+                                 {card.description}
+                             </p>
+
+                         </div>
+                     )
+                 })
+                )}
             </div>
+             <div className='mt-6 flex justify-center'>
+                 <button className='px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105'>
+                     Review Summary
+                 </button>
+             </div>
         </div>
 
     );
