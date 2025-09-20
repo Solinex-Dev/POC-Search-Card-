@@ -1,5 +1,7 @@
 import { Search, Heart, Star, User, DollarSign, TrendingUp, PieChart, CreditCard, Building, Wallet, BarChart3, Target, Shield, Zap, Clock, X, Filter } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
+import { useLanguage } from '../contexts/LanguageContext'
+import { translations } from '../data/translations'
 
 /**
  * SearchCard Component - Interactive Financial Dashboard Search Interface
@@ -12,6 +14,10 @@ import { useState, useEffect, useRef } from 'react'
  * - Visual feedback with card highlighting
  */
 function SearchCard() {
+    // Language context
+    const { language } = useLanguage()
+    const t = translations[language]
+    
     // State management for search functionality
     const [searchTerm, setSearchTerm] = useState('')                    // Current search input
     const [searchHistory, setSearchHistory] = useState([])              // Recent search terms (max 10)
@@ -27,40 +33,41 @@ function SearchCard() {
     
     // Financial service cards data with search keywords and categories
     const cards = [
-        { id: 1, name: "Finance Pro", icon: <DollarSign className="w-12 h-12 text-green-500 mb-2" />, keywords: ["finance", "money", "dollar", "pro"], category: "finance", description: "Professional money tracking and analysis." },
-        { id: 2, name: "Stock Tracker", icon: <TrendingUp className="w-12 h-12 text-blue-500 mb-2" />, keywords: ["stock", "tracker", "trending", "up"], category: "investment", description: "Real-time stock monitoring with alerts." },
-        { id: 3, name: "Portfolio", icon: <PieChart className="w-12 h-12 text-purple-500 mb-2" />, keywords: ["portfolio", "chart", "pie", "investment"], category: "investment", description: "Interactive portfolio visualization." },
-        { id: 4, name: "Credit Score", icon: <CreditCard className="w-12 h-12 text-yellow-500 mb-2" />, keywords: ["credit", "score", "card", "payment"], category: "credit", description: "Credit monitoring and improvement." },
-        { id: 5, name: "Real Estate", icon: <Building className="w-12 h-12 text-orange-500 mb-2" />, keywords: ["real", "estate", "building", "property"], category: "investment", description: "Property investment tracking." },
-        { id: 6, name: "Savings", icon: <Wallet className="w-12 h-12 text-pink-500 mb-2" />, keywords: ["savings", "wallet", "money", "store"], category: "savings", description: "Smart savings goal tracking." },
-        { id: 7, name: "Analytics", icon: <BarChart3 className="w-12 h-12 text-cyan-500 mb-2" />, keywords: ["analytics", "chart", "data", "analysis"], category: "analytics", description: "Advanced financial insights." },
-        { id: 8, name: "Goals", icon: <Target className="w-12 h-12 text-red-500 mb-2" />, keywords: ["goals", "target", "aim", "objective"], category: "planning", description: "Financial goal tracking." },
-        { id: 9, name: "Security", icon: <Shield className="w-12 h-12 text-indigo-500 mb-2" />, keywords: ["security", "shield", "protect", "safe"], category: "security", description: "Bank-level data protection." },
-        { id: 10, name: "Quick Pay", icon: <Zap className="w-12 h-12 text-yellow-600 mb-2" />, keywords: ["quick", "pay", "fast", "zap"], category: "payments", description: "Lightning-fast payments." }
+        { id: 1, name: "Finance Pro", icon: <DollarSign className="w-12 h-12 text-green-500 mb-2" />, keywords: ["finance", "money", "dollar", "pro", "การเงิน", "เงิน", "จัดการเงิน"], category: "finance", description: t.cards.financePro },
+        { id: 2, name: "Stock Tracker", icon: <TrendingUp className="w-12 h-12 text-blue-500 mb-2" />, keywords: ["stock", "tracker", "trending", "up", "หุ้น", "ติดตาม", "ตลาดหุ้น"], category: "investment", description: t.cards.stockTracker },
+        { id: 3, name: "Portfolio", icon: <PieChart className="w-12 h-12 text-purple-500 mb-2" />, keywords: ["portfolio", "chart", "pie", "investment", "พอร์ต", "การลงทุน", "พอร์ตโฟลิโอ"], category: "investment", description: t.cards.portfolio },
+        { id: 4, name: "Credit Score", icon: <CreditCard className="w-12 h-12 text-yellow-500 mb-2" />, keywords: ["credit", "score", "card", "payment", "เครดิต", "คะแนน", "เครดิตสกอร์"], category: "credit", description: t.cards.creditScore },
+        { id: 5, name: "Real Estate", icon: <Building className="w-12 h-12 text-orange-500 mb-2" />, keywords: ["real", "estate", "building", "property", "อสังหาริมทรัพย์", "อสังหา", "ที่ดิน"], category: "investment", description: t.cards.realEstate },
+        { id: 6, name: "Savings", icon: <Wallet className="w-12 h-12 text-pink-500 mb-2" />, keywords: ["savings", "wallet", "money", "store", "ออม", "ออมเงิน", "การออม"], category: "savings", description: t.cards.savings },
+        { id: 7, name: "Analytics", icon: <BarChart3 className="w-12 h-12 text-cyan-500 mb-2" />, keywords: ["analytics", "chart", "data", "analysis", "วิเคราะห์", "ข้อมูล", "การวิเคราะห์"], category: "analytics", description: t.cards.analytics },
+        { id: 8, name: "Goals", icon: <Target className="w-12 h-12 text-red-500 mb-2" />, keywords: ["goals", "target", "aim", "objective", "เป้าหมาย", "วัตถุประสงค์", "แผน"], category: "planning", description: t.cards.goals },
+        { id: 9, name: "Security", icon: <Shield className="w-12 h-12 text-indigo-500 mb-2" />, keywords: ["security", "shield", "protect", "safe", "ความปลอดภัย", "รักษาความปลอดภัย", "ป้องกัน"], category: "security", description: t.cards.security },
+        { id: 10, name: "Quick Pay", icon: <Zap className="w-12 h-12 text-yellow-600 mb-2" />, keywords: ["quick", "pay", "fast", "zap", "ชำระเงิน", "จ่าย", "การชำระ"], category: "payments", description: t.cards.quickPay }
     ]
 
     // Available categories for filtering
     const categories = [
-        { id: 'all', name: 'All Categories' },
-        { id: 'finance', name: 'Finance' },
-        { id: 'investment', name: 'Investment' },
-        { id: 'credit', name: 'Credit' },
-        { id: 'savings', name: 'Savings' },
-        { id: 'analytics', name: 'Analytics' },
-        { id: 'planning', name: 'Planning' },
-        { id: 'security', name: 'Security' },
-        { id: 'payments', name: 'Payments' }
+        { id: 'all', name: t.filters.categories.all },
+        { id: 'finance', name: t.filters.categories.finance },
+        { id: 'investment', name: t.filters.categories.investment },
+        { id: 'credit', name: t.filters.categories.credit },
+        { id: 'savings', name: t.filters.categories.savings },
+        { id: 'analytics', name: t.filters.categories.analytics },
+        { id: 'planning', name: t.filters.categories.planning },
+        { id: 'security', name: t.filters.categories.security },
+        { id: 'payments', name: t.filters.categories.payments }
     ]
 
     /**
-     * Fuzzy search algorithm for intelligent text matching
+     * Enhanced fuzzy search algorithm with Thai language support
      * @param {string} str - The string to search in
      * @param {string} pattern - The search pattern
      * @returns {Object} - { score: number, matched: boolean }
      */
     const fuzzyMatch = (str, pattern) => {
-        const strLower = str.toLowerCase()
-        const patternLower = pattern.toLowerCase()
+        // Normalize strings (handle Thai characters properly)
+        const strLower = str.toLowerCase().trim()
+        const patternLower = pattern.toLowerCase().trim()
         
         // Empty pattern returns no match
         if (patternLower === '') return { score: 0, matched: false }
@@ -74,16 +81,18 @@ function SearchCard() {
         // Contains pattern gets medium score (70)
         if (strLower.includes(patternLower)) return { score: 70, matched: true }
         
-        // Advanced fuzzy matching with character sequence analysis
+        // Thai character sequence matching
         let patternIdx = 0      // Current position in pattern
         let consecutive = 0     // Current consecutive matches
         let maxConsecutive = 0  // Maximum consecutive matches found
+        let totalMatches = 0    // Total character matches found
         
         // Iterate through string to find pattern characters in sequence
         for (let i = 0; i < strLower.length && patternIdx < patternLower.length; i++) {
             if (strLower[i] === patternLower[patternIdx]) {
                 patternIdx++
                 consecutive++
+                totalMatches++
                 maxConsecutive = Math.max(maxConsecutive, consecutive)
             } else {
                 consecutive = 0  // Reset consecutive counter on mismatch
@@ -94,34 +103,65 @@ function SearchCard() {
         if (patternIdx === patternLower.length) {
             const completeness = (patternIdx / patternLower.length) * 50    // 50% weight for completeness
             const consecutiveness = (maxConsecutive / patternLower.length) * 30  // 30% weight for consecutive matches
-            return { score: completeness + consecutiveness, matched: true }
+            const density = (totalMatches / strLower.length) * 20  // 20% weight for match density
+            return { score: completeness + consecutiveness + density, matched: true }
+        }
+        
+        // Partial match for Thai characters (more lenient)
+        const partialMatches = totalMatches
+        if (partialMatches >= Math.ceil(patternLower.length * 0.6)) { // 60% match threshold
+            const partialScore = (partialMatches / patternLower.length) * 60
+            return { score: partialScore, matched: true }
         }
         
         return { score: 0, matched: false }
     }
 
     /**
-     * Generate search suggestions based on current input
+     * Generate search suggestions based on current input (supports both English and Thai)
      * @returns {Array} - Array of suggestion objects
      */
     const getSuggestions = () => {
         // If no search term, return recent search history
         if (!searchTerm.trim()) return searchHistory.slice(0, 5)
         
-        // Get all unique keywords from cards
+        // Get all unique keywords from cards (both English and Thai)
         const allKeywords = cards.flatMap(card => card.keywords)
         const uniqueKeywords = [...new Set(allKeywords)]
         
-        // Filter keywords that match current search term using fuzzy matching
-        return uniqueKeywords
-            .filter(keyword => 
-                fuzzyMatch(keyword, searchTerm).matched
-            )
+        // Filter keywords that match current search term using enhanced fuzzy matching
+        const matchingKeywords = uniqueKeywords
+            .map(keyword => ({
+                text: keyword,
+                score: fuzzyMatch(keyword, searchTerm).score,
+                matched: fuzzyMatch(keyword, searchTerm).matched
+            }))
+            .filter(item => item.matched)
+            .sort((a, b) => b.score - a.score) // Sort by relevance score
+            .map(item => ({
+                text: item.text,
+                type: 'keyword'
+            }))
+            .slice(0, 5)  // Limit to 5 suggestions
+        
+        // If we have matching keywords, return them
+        if (matchingKeywords.length > 0) {
+            return matchingKeywords
+        }
+        
+        // If no direct matches, try partial matching for Thai characters
+        const partialMatches = uniqueKeywords
+            .filter(keyword => {
+                const match = fuzzyMatch(keyword, searchTerm)
+                return match.score > 30 // Lower threshold for partial matches
+            })
             .map(keyword => ({
                 text: keyword,
                 type: 'keyword'
             }))
-            .slice(0, 5)  // Limit to 5 suggestions
+            .slice(0, 3)  // Limit partial matches to 3
+        
+        return partialMatches
     }
 
     /**
@@ -304,35 +344,35 @@ function SearchCard() {
     }
 
     return (
-        <div className='flex flex-col items-center justify-center'>
+        <div className='flex flex-col items-center justify-start pt-20 pb-8 '>
             {/* Hero Section */}
-            <div className='text-center max-w-4xl px-6 py-6'>
-                <div className='mb-4'>
-                    <h1 className='text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent mb-3 leading-tight'>
-                        Financial Dashboard
+            <div className='text-center max-w-4xl px-6 py-3'>
+                <div className='mb-3'>
+                    <h1 className='text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2 leading-tight'>
+                        {t.hero.title}
                     </h1>
-                    <div className='w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-4'></div>
+                    <div className='w-12 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-3'></div>
                 </div>
-                <p className='text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto mb-4'>
-                    Discover powerful financial tools designed to help you manage and optimize your money.
+                <p className='text-base md:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto mb-3'>
+                    {t.hero.description}
                 </p>
                 <div className='flex flex-wrap justify-center gap-3'>
                     <div className='flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-full'>
                         <div className='w-1.5 h-1.5 bg-blue-500 rounded-full'></div>
-                        <span className='text-blue-700 font-medium text-sm'>Real-time Tracking</span>
+                        <span className='text-blue-700 font-medium text-sm'>{t.hero.features.realTime}</span>
                     </div>
                     <div className='flex items-center gap-2 bg-purple-50 px-3 py-1 rounded-full'>
                         <div className='w-1.5 h-1.5 bg-purple-500 rounded-full'></div>
-                        <span className='text-purple-700 font-medium text-sm'>Smart Analytics</span>
+                        <span className='text-purple-700 font-medium text-sm'>{t.hero.features.analytics}</span>
                     </div>
                     <div className='flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full'>
                         <div className='w-1.5 h-1.5 bg-green-500 rounded-full'></div>
-                        <span className='text-green-700 font-medium text-sm'>Secure & Reliable</span>
+                        <span className='text-green-700 font-medium text-sm'>{t.hero.features.security}</span>
                     </div>
                 </div>
             </div>
             {/* Search Bar with Suggestions */}
-            <div className='relative w-full max-w-2xl'>
+            <div className='relative w-full max-w-2xl mt-4'>
                 <div className='flex flex-row items-center justify-center gap-3'>
                     <div className='relative flex-1'>
                         {/* Input Group with Search Button Inside */}
@@ -341,7 +381,7 @@ function SearchCard() {
                                 ref={inputRef}
                                 className='border-2 border-gray-300 bg-white h-12 focus:text-gray-800 focus:outline-blue-500 focus:outline-none rounded-lg p-2 pr-12 w-full text-gray-600 shadow-sm hover:shadow-md transition-shadow' 
                                 type="search" 
-                                placeholder="Search cards..." 
+                                placeholder={t.search.placeholder}
                                 value={searchTerm}
                                 onChange={(e) => handleSearchChange(e.target.value)}
                                 onKeyDown={handleKeyDown}
@@ -404,7 +444,7 @@ function SearchCard() {
                 {/* Search History - Shows recent searches when not showing suggestions */}
                 {searchHistory.length > 0 && !showSuggestions && (
                     <div className='mt-2 flex flex-wrap gap-2'>
-                        <span className='text-sm text-gray-600'>Recent:</span>
+                        <span className='text-sm text-gray-600'>{t.search.recent}</span>
                         {searchHistory.slice(0, 5).map((term, index) => (
                             <button
                                 key={index}
@@ -421,11 +461,11 @@ function SearchCard() {
             
             {/* Category Filters Panel - Expandable filter options */}
             {showFilters && (
-                <div className='mt-6 w-full max-w-5xl'>
+                <div className='mt-4 w-full max-w-5xl'>
                     <div className='bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-xl'>
                         <div className='flex items-center gap-3 mb-4'>
                             <Filter className="w-5 h-5 text-blue-600" />
-                            <h3 className='text-xl font-bold text-gray-800'>Filter by Category</h3>
+                            <h3 className='text-xl font-bold text-gray-800'>{t.filters.title}</h3>
                         </div>
                         <div className='flex flex-wrap gap-3'>
                             {categories.map(category => (
@@ -446,14 +486,14 @@ function SearchCard() {
                 </div>
             )}
             {/* Cards Grid - Main content area with search results */}
-            <div className='flex flex-row items-center justify-center mt-6 flex-wrap gap-6 '>
+            <div className='flex flex-row items-center justify-center mt-4 flex-wrap gap-4 '>
                 {matchingCards.length === 0 ? (
                     /* Empty State - When no cards match search/filter criteria */
                     <div className='text-center py-12 '>
                         <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                        <h3 className='text-xl font-semibold text-gray-600 mb-2'>No cards found</h3>
+                        <h3 className='text-xl font-semibold text-gray-600 mb-2'>{t.search.noResults.title}</h3>
                         <p className='text-gray-500 mb-4'>
-                            {searchTerm ? `No cards match "${searchTerm}"` : 'No cards available'}
+                            {searchTerm ? t.search.noResults.messageWithSearch.replace('{searchTerm}', searchTerm) : t.search.noResults.message}
                         </p>
                         {searchTerm && (
                             <button
@@ -463,7 +503,7 @@ function SearchCard() {
                                     setSelectedCategory('all')
                                 }}
                             >
-                                Clear search
+                                {t.search.noResults.clearSearch}
                             </button>
                         )}
                     </div>
@@ -525,9 +565,9 @@ function SearchCard() {
                  })
                 )}
             </div>
-             <div className='mt-6 flex justify-center'>
+             <div className='mt-4 flex justify-center'>
                  <button className='px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105'>
-                     Review Summary
+                     {t.actions.reviewSummary}
                  </button>
              </div>
         </div>

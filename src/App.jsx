@@ -1,10 +1,16 @@
 import './App.css'
 import SearchCard from './components/SearchCard'
+import Navbar from './components/Navbar'
+import { LanguageProvider } from './contexts/LanguageContext'
+
 
 function App() {
 
   return (
-    <SearchCard />
+    <LanguageProvider>
+      <Navbar />
+      <SearchCard />
+    </LanguageProvider>
   )
 }
 
