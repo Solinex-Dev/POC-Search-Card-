@@ -19,6 +19,8 @@ function SearchCard() {
     const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1) // Currently selected suggestion
     const [selectedCategory, setSelectedCategory] = useState('all')     // Active category filter
     const [showFilters, setShowFilters] = useState(false)               // Show/hide category filters panel
+    const [previousOrder, setPreviousOrder] = useState([])              // Previous card order for animation
+    const [isTyping, setIsTyping] = useState(false)                     // Track if user is actively typing
     
     // Refs for DOM manipulation and event handling
     const inputRef = useRef(null)          // Search input field reference
@@ -141,6 +143,19 @@ function SearchCard() {
         setSearchTerm(value)
         setShowSuggestions(value.length > 0)  // Show suggestions only when typing
         setSelectedSuggestionIndex(-1)        // Reset selection
+        
+        // Start typing animation
+        setIsTyping(true)
+        
+        // Clear existing timeout
+        if (window.typingTimeout) {
+            clearTimeout(window.typingTimeout)
+        }
+        
+        // Stop typing animation after 1 second of inactivity
+        window.typingTimeout = setTimeout(() => {
+            setIsTyping(false)
+        }, 1000)
     }
 
     /**
@@ -264,9 +279,54 @@ function SearchCard() {
         }
     }, [])
 
+    /**
+     * Cleanup timeout on component unmount
+     */
+    useEffect(() => {
+        return () => {
+            if (window.typingTimeout) {
+                clearTimeout(window.typingTimeout)
+            }
+        }
+    }, [])
+
     // Get filtered and matched cards
     const matchingCards = getMatchingCards()
     const topMatch = matchingCards.find(card => card.hasMatch)  // Best matching card for special highlighting
+
+    // Track card order changes for animation
+    useEffect(() => {
+        const currentOrder = matchingCards.map(card => card.id)
+        const hasOrderChanged = JSON.stringify(currentOrder) !== JSON.stringify(previousOrder)
+        
+        if (hasOrderChanged && previousOrder.length > 0) {
+            // Cards have been reordered, trigger animation
+            setPreviousOrder(currentOrder)
+        } else if (previousOrder.length === 0) {
+            // Initial load, set current order
+            setPreviousOrder(currentOrder)
+        }
+    }, [matchingCards, previousOrder])
+
+    /**
+     * Determine animation type based on card position change
+     * @param {number} cardId - Card ID
+     * @param {number} currentIndex - Current position
+     * @returns {string} - Animation class name
+     */
+    const getCardAnimation = (cardId, currentIndex) => {
+        const previousIndex = previousOrder.indexOf(cardId)
+        
+        if (previousIndex === -1) {
+            // New card appearing
+            return 'card-enter'
+        } else if (previousIndex !== currentIndex) {
+            // Card moved position
+            return previousIndex < currentIndex ? 'card-move-down' : 'card-move-up'
+        }
+        
+        return '' // No animation needed
+    }
 
     return (
         <div className='flex flex-col items-center justify-center min-h-screen p-4'>
@@ -276,7 +336,7 @@ function SearchCard() {
                     <div className='relative flex-1'>
                         <input 
                             ref={inputRef}
-                            className='border-2 border-gray-400 bg-slate-100 focus:text-slate-700 focus:outline-slate-400 focus:outline-none rounded-md p-2 w-full text-slate-400' 
+                            className={`search-input border-2 border-gray-400 bg-slate-100 focus:text-slate-700 focus:outline-slate-400 focus:outline-none rounded-md p-2 w-full text-slate-400 transition-all duration-300 ease-in-out focus:scale-105 focus:border-blue-500 focus:shadow-lg focus:shadow-blue-200 focus:bg-white ${isTyping ? 'typing' : ''}`}
                             type="search" 
                             placeholder="Search cards..." 
                             value={searchTerm}
@@ -398,20 +458,24 @@ function SearchCard() {
                     </div>
                 ) : (
                     /* Card Results - Render matching cards with visual feedback */
-                    matchingCards.map((card) => {
+                    matchingCards.map((card, index) => {
                      const isTopMatch = topMatch && card.id === topMatch.id  // Best matching card
                      const isMatching = card.hasMatch                        // Any match found
+                     const animationClass = getCardAnimation(card.id, index)  // Get animation type
                      
                      return (
                          <div 
                              key={card.id}
-                             className={`bg-white border-2 rounded-md p-2 w-52 h-52 flex items-center justify-center flex-col cursor-pointer transition-all duration-300 shadow-lg relative ${
+                             className={`bg-white border-2 rounded-md p-2 w-52 h-52 flex items-center justify-center flex-col cursor-pointer transition-all duration-500 ease-in-out shadow-lg relative transform ${
                                  isTopMatch 
                                      ? 'border-yellow-400 shadow-yellow-200 shadow-2xl scale-105 bg-gradient-to-br from-yellow-50 to-white' 
                                      : isMatching 
                                          ? 'border-blue-300 shadow-blue-200 shadow-xl scale-102' 
                                          : 'border-gray-200 opacity-50 hover:opacity-70'
-                             } hover:shadow-2xl hover:scale-105`}
+                             } hover:shadow-2xl hover:scale-105 ${animationClass}`}
+                             style={{
+                                 animationDelay: `${index * 30}ms`, // Staggered animation delay
+                             }}
                          >
                              {/* Matching Letter Indicator - Shows first letter of best match */}
                              {isTopMatch && card.bestMatch && (
