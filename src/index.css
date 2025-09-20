@@ -150,54 +150,6 @@ h1 {
   animation: cardSpringDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* Search Input Animations */
-@keyframes inputFocus {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.1);
-  }
-  100% {
-    transform: scale(1.05);
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
-  }
-}
-
-@keyframes inputPulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
-  }
-}
-
-/* Search input focus animation */
-.search-input:focus {
-  animation: inputFocus 0.6s ease-out forwards;
-}
-
-/* Search input pulse effect when typing */
-.search-input.typing {
-  animation: inputPulse 1.5s ease-in-out infinite;
-}
-
-/* Smooth placeholder animation */
-.search-input::placeholder {
-  transition: all 0.3s ease-in-out;
-}
-
-.search-input:focus::placeholder {
-  transform: translateY(-2px);
-  opacity: 0.7;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
