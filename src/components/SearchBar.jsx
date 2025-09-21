@@ -320,17 +320,17 @@ function SearchBar() {
                     return (
                         <div 
                             key={card.id}
-                            className={`relative border rounded-lg p-6 cursor-pointer transition-all duration-200 hover:shadow-md min-h-[200px] flex flex-col ${
+                            className={`relative border rounded-lg p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] min-h-[200px] flex flex-col group ${
                                 isFirstCard 
-                                    ? 'border-green-500 bg-green-50' 
+                                    ? 'border-green-500 bg-green-50 hover:bg-green-100' 
                                     : card.hasMatch
-                                    ? 'border-gray-200 bg-white hover:border-gray-300'
-                                    : 'border-gray-200 bg-white opacity-80'
+                                    ? 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
+                                    : 'border-gray-200 bg-white opacity-80 hover:opacity-100'
                             }`}
                         >
                             {/* Card Icon */}
                             <div className="flex justify-center mb-4">
-                                <div className={`${isFirstCard ? 'text-green-600' : card.hasMatch ? 'text-gray-600' : 'text-gray-400'}`}>
+                                <div className={`transition-transform duration-300 group-hover:scale-110 ${isFirstCard ? 'text-green-600' : card.hasMatch ? 'text-gray-600' : 'text-gray-400'}`}>
                                     {card.icon}
                                 </div>
                             </div>
