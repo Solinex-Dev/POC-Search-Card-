@@ -1,16 +1,11 @@
 import './App.css'
-import SearchCard from './components/SearchCard'
-import Navbar from './components/Navbar'
-import { LanguageProvider } from './contexts/LanguageContext'
-
+import SearchBar from './components/SearchBar'
 
 function App() {
-
   return (
-    <LanguageProvider>
-      <Navbar />
-      <SearchCard />
-    </LanguageProvider>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <SearchBar />
+    </div>
   )
 }
 
