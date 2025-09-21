@@ -17,6 +17,7 @@ function SearchBar() {
     const [searchHistory, setSearchHistory] = useState([])
     const [language, setLanguage] = useState('th') // 'th' or 'en'
     const [selectedCategory, setSelectedCategory] = useState('all')
+    const [isLoading, setIsLoading] = useState(false)
     
     // Refs
     const inputRef = useRef(null)
@@ -220,6 +221,12 @@ function SearchBar() {
     const handleSearchChange = (value) => {
         setSearchTerm(value)
         console.log('Search term changed:', value)
+        
+        // Simulate loading state for demo
+        if (value.trim()) {
+            setIsLoading(true)
+            setTimeout(() => setIsLoading(false), 300)
+        }
     }
 
     /**
@@ -296,9 +303,9 @@ function SearchBar() {
                     {searchTerm && (
                         <button
                             onClick={clearSearch}
-                            className="absolute right-8 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 hover:text-gray-600 transition-colors"
+                            className="absolute right-8 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center transition-all duration-200 animate-in fade-in-0 zoom-in-95"
                         >
-                            <X className="w-3 h-3" />
+                            <X className="w-4 h-4" />
                         </button>
                     )}
                 </div>
@@ -325,24 +332,65 @@ function SearchBar() {
             {searchTerm && (
                 <div className="mb-6 text-center">
                     <div className="flex items-center justify-center gap-2 mb-2">
-                        <Search className="w-5 h-5 text-blue-500" />
+                        {isLoading ? (
+                            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                            <Search className="w-5 h-5 text-blue-500" />
+                        )}
                         <span className="text-sm font-medium text-gray-600">
-                            {language === 'th' ? 'ผลการค้นหา:' : 'Search Results:'}
+                            {isLoading 
+                                ? (language === 'th' ? 'กำลังค้นหา...' : 'Searching...')
+                                : (language === 'th' ? 'ผลการค้นหา:' : 'Search Results:')
+                            }
                         </span>
                         <span className="text-sm font-semibold text-blue-600">"{searchTerm}"</span>
                     </div>
-                    <div className="flex items-center justify-center gap-2">
-                        <p className="text-sm text-gray-500">
-                            {language === 'th' 
-                                ? `พบ ${filteredCards.filter(card => card.hasMatch).length} จาก ${cards.length} รายการ`
-                                : `${filteredCards.filter(card => card.hasMatch).length} of ${cards.length} results`
-                            }
-                        </p>
-                        {filteredCards.filter(card => card.hasMatch).length > 0 && (
-                            <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-600 bg-green-100 rounded-full">
-                                {language === 'th' ? 'พบผลลัพธ์' : 'Found'}
-                            </span>
-                        )}
+                    {!isLoading && (
+                        <div className="flex items-center justify-center gap-2">
+                            <p className="text-sm text-gray-500">
+                                {language === 'th' 
+                                    ? `พบ ${filteredCards.filter(card => card.hasMatch).length} จาก ${cards.length} รายการ`
+                                    : `${filteredCards.filter(card => card.hasMatch).length} of ${cards.length} results`
+                                }
+                            </p>
+                            {filteredCards.filter(card => card.hasMatch).length > 0 && (
+                                <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-600 bg-green-100 rounded-full">
+                                    {language === 'th' ? 'พบผลลัพธ์' : 'Found'}
+                                </span>
+                            )}
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* No Results State */}
+            {searchTerm && !isLoading && filteredCards.filter(card => card.hasMatch).length === 0 && (
+                <div className="text-center py-12">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                        <Search className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                        {language === 'th' ? 'ไม่พบผลลัพธ์' : 'No results found'}
+                    </h3>
+                    <p className="text-gray-500 mb-4">
+                        {language === 'th' 
+                            ? 'ลองค้นหาคำอื่นหรือเปลี่ยนหมวดหมู่'
+                            : 'Try different keywords or change category'
+                        }
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-2">
+                        <button
+                            onClick={() => setSearchTerm('')}
+                            className="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                        >
+                            {language === 'th' ? 'ล้างการค้นหา' : 'Clear search'}
+                        </button>
+                        <button
+                            onClick={() => setSelectedCategory('all')}
+                            className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                        >
+                            {language === 'th' ? 'แสดงทั้งหมด' : 'Show all'}
+                        </button>
                     </div>
                 </div>
             )}
