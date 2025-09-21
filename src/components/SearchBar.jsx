@@ -16,6 +16,7 @@ function SearchBar() {
     const [searchTerm, setSearchTerm] = useState('')
     const [searchHistory, setSearchHistory] = useState([])
     const [language, setLanguage] = useState('th') // 'th' or 'en'
+    const [selectedCategory, setSelectedCategory] = useState('all')
     
     // Refs
     const inputRef = useRef(null)
@@ -112,6 +113,15 @@ function SearchBar() {
     const toggleLanguage = () => {
         setLanguage(prev => prev === 'th' ? 'en' : 'th')
     }
+
+    // Get unique categories
+    const categories = [
+        { id: 'all', name: { th: 'ทั้งหมด', en: 'All' } },
+        { id: 'finance', name: { th: 'การเงิน', en: 'Finance' } },
+        { id: 'investment', name: { th: 'การลงทุน', en: 'Investment' } },
+        { id: 'credit', name: { th: 'เครดิต', en: 'Credit' } },
+        { id: 'savings', name: { th: 'การออม', en: 'Savings' } }
+    ]
     
     /**
      * Enhanced fuzzy search algorithm
@@ -153,12 +163,20 @@ function SearchBar() {
     }
 
     /**
-     * Get filtered cards based on search term
+     * Get filtered cards based on search term and category
      */
     const getFilteredCards = () => {
-        if (!searchTerm.trim()) return cards
+        let filteredCards = cards
         
-        return cards.map(card => {
+        // Filter by category first
+        if (selectedCategory !== 'all') {
+            filteredCards = cards.filter(card => card.category === selectedCategory)
+        }
+        
+        // Then apply search filter
+        if (!searchTerm.trim()) return filteredCards
+        
+        return filteredCards.map(card => {
             let bestMatch = null
             let bestScore = 0
             let totalScore = 0
@@ -284,6 +302,23 @@ function SearchBar() {
                         </button>
                     )}
                 </div>
+            </div>
+
+            {/* Category Filter Pills */}
+            <div className="flex flex-wrap justify-center gap-2 mb-6">
+                {categories.map((category) => (
+                    <button
+                        key={category.id}
+                        onClick={() => setSelectedCategory(category.id)}
+                        className={`px-3 py-1 text-sm font-medium rounded-full transition-all duration-200 ${
+                            selectedCategory === category.id
+                                ? 'bg-blue-500 text-white shadow-md'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                    >
+                        {category.name[language]}
+                    </button>
+                ))}
             </div>
 
             {/* Search Results Header */}
