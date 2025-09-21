@@ -17,7 +17,7 @@ function SearchBar() {
     const [searchHistory, setSearchHistory] = useState([])
     const [language, setLanguage] = useState('th') // 'th' or 'en'
     const [selectedCategory, setSelectedCategory] = useState('all')
-    const [isLoading, setIsLoading] = useState(false)
+    const [favorites, setFavorites] = useState(new Set())
     
     // Refs
     const inputRef = useRef(null)
@@ -115,14 +115,35 @@ function SearchBar() {
         setLanguage(prev => prev === 'th' ? 'en' : 'th')
     }
 
-    // Get unique categories
+    // Get unique categories with search keywords
     const categories = [
-        { id: 'all', name: { th: 'ทั้งหมด', en: 'All' } },
-        { id: 'finance', name: { th: 'การเงิน', en: 'Finance' } },
-        { id: 'investment', name: { th: 'การลงทุน', en: 'Investment' } },
-        { id: 'credit', name: { th: 'เครดิต', en: 'Credit' } },
-        { id: 'savings', name: { th: 'การออม', en: 'Savings' } }
+        { 
+            id: 'all', 
+            name: { th: 'ทั้งหมด', en: 'All' },
+            keywords: ['all', 'ทั้งหมด', 'everything', 'ทุกอย่าง']
+        },
+        { 
+            id: 'finance', 
+            name: { th: 'การเงิน', en: 'Finance' },
+            keywords: ['finance', 'การเงิน', 'money', 'budget', 'expense', 'financial']
+        },
+        { 
+            id: 'investment', 
+            name: { th: 'การลงทุน', en: 'Investment' },
+            keywords: ['investment', 'การลงทุน', 'invest', 'portfolio', 'stocks', 'trading']
+        },
+        { 
+            id: 'credit', 
+            name: { th: 'เครดิต', en: 'Credit' },
+            keywords: ['credit', 'เครดิต', 'debt', 'payment', 'score', 'card']
+        },
+        { 
+            id: 'savings', 
+            name: { th: 'การออม', en: 'Savings' },
+            keywords: ['savings', 'การออม', 'save', 'goals', 'money', 'store']
+        }
     ]
+
     
     /**
      * Enhanced fuzzy search algorithm
@@ -164,7 +185,7 @@ function SearchBar() {
     }
 
     /**
-     * Get filtered cards based on search term and category
+     * Get filtered cards based on search term and category with improved accuracy
      */
     const getFilteredCards = () => {
         let filteredCards = cards
@@ -182,14 +203,40 @@ function SearchBar() {
             let bestScore = 0
             let totalScore = 0
             
-            // Check card name match (weighted higher) - use the correct language
+            // Check card name match (weighted highest) - use the correct language
             const nameMatch = fuzzyMatch(card.name[language], searchTerm)
             if (nameMatch.matched) {
                 bestScore = Math.max(bestScore, nameMatch.score)
-                totalScore += nameMatch.score * 2
+                totalScore += nameMatch.score * 3 // Higher weight for name matches
             }
             
-            // Check keywords for matches
+            // Check category match (weighted high)
+            const categoryMatch = fuzzyMatch(card.category, searchTerm)
+            if (categoryMatch.matched) {
+                bestScore = Math.max(bestScore, categoryMatch.score)
+                totalScore += categoryMatch.score * 2.5
+                if (categoryMatch.score === bestScore) {
+                    bestMatch = card.category
+                }
+            }
+            
+            // Check category keywords
+            const currentCategory = categories.find(cat => cat.id === card.category)
+            if (currentCategory) {
+                const categoryKeywordMatches = currentCategory.keywords.map(keyword => {
+                    const match = fuzzyMatch(keyword, searchTerm)
+                    if (match.matched) {
+                        bestScore = Math.max(bestScore, match.score)
+                        totalScore += match.score * 2
+                        if (match.score === bestScore) {
+                            bestMatch = keyword
+                        }
+                    }
+                    return match
+                }).filter(match => match.matched)
+            }
+            
+            // Check card keywords for matches
             const keywordMatches = card.keywords.map(keyword => {
                 const match = fuzzyMatch(keyword, searchTerm)
                 if (match.matched) {
@@ -206,7 +253,7 @@ function SearchBar() {
                 ...card,
                 matchScore: totalScore,
                 bestMatch: bestMatch,
-                hasMatch: keywordMatches.length > 0 || nameMatch.matched
+                hasMatch: keywordMatches.length > 0 || nameMatch.matched || categoryMatch.matched
             }
         }).sort((a, b) => {
             if (a.hasMatch && !b.hasMatch) return -1
@@ -267,6 +314,30 @@ function SearchBar() {
         inputRef.current?.focus()
     }
 
+    /**
+     * Toggle favorite
+     */
+    const toggleFavorite = (cardId) => {
+        setFavorites(prev => {
+            const newFavorites = new Set(prev)
+            if (newFavorites.has(cardId)) {
+                newFavorites.delete(cardId)
+            } else {
+                newFavorites.add(cardId)
+            }
+            return newFavorites
+        })
+    }
+
+    /**
+     * Handle card click
+     */
+    const handleCardClick = (card) => {
+        console.log('Card clicked:', card.name[language])
+        // Here you would typically navigate to card details
+        alert(`${language === 'th' ? 'คลิกที่การ์ด:' : 'Clicked card:'} ${card.name[language]}`)
+    }
+
 
     const filteredCards = getFilteredCards()
 
@@ -309,6 +380,7 @@ function SearchBar() {
                         </button>
                     )}
                 </div>
+
             </div>
 
             {/* Category Filter Pills */}
@@ -328,43 +400,9 @@ function SearchBar() {
                 ))}
             </div>
 
-            {/* Search Results Header */}
-            {searchTerm && (
-                <div className="mb-6 text-center">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                        {isLoading ? (
-                            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                        ) : (
-                            <Search className="w-5 h-5 text-blue-500" />
-                        )}
-                        <span className="text-sm font-medium text-gray-600">
-                            {isLoading 
-                                ? (language === 'th' ? 'กำลังค้นหา...' : 'Searching...')
-                                : (language === 'th' ? 'ผลการค้นหา:' : 'Search Results:')
-                            }
-                        </span>
-                        <span className="text-sm font-semibold text-blue-600">"{searchTerm}"</span>
-                    </div>
-                    {!isLoading && (
-                        <div className="flex items-center justify-center gap-2">
-                            <p className="text-sm text-gray-500">
-                                {language === 'th' 
-                                    ? `พบ ${filteredCards.filter(card => card.hasMatch).length} จาก ${cards.length} รายการ`
-                                    : `${filteredCards.filter(card => card.hasMatch).length} of ${cards.length} results`
-                                }
-                            </p>
-                            {filteredCards.filter(card => card.hasMatch).length > 0 && (
-                                <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-600 bg-green-100 rounded-full">
-                                    {language === 'th' ? 'พบผลลัพธ์' : 'Found'}
-                                </span>
-                            )}
-                        </div>
-                    )}
-                </div>
-            )}
 
             {/* No Results State */}
-            {searchTerm && !isLoading && filteredCards.filter(card => card.hasMatch).length === 0 && (
+            {searchTerm && filteredCards.filter(card => card.hasMatch).length === 0 && (
                 <div className="text-center py-12">
                     <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
                         <Search className="w-8 h-8 text-gray-400" />
@@ -399,35 +437,111 @@ function SearchBar() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredCards.map((card, index) => {
                     const isFirstCard = index === 0 && card.hasMatch
+                    const isSecondCard = index === 1 && card.hasMatch
+                    const isThirdCard = index === 2 && card.hasMatch
+                    
+                    // Calculate opacity based on ranking (most accurate = highest opacity)
+                    const getCardOpacity = () => {
+                        if (!searchTerm) return 'opacity-100'
+                        if (!card.hasMatch) return 'opacity-40'
+                        if (index === 0) return 'opacity-100' // Most accurate
+                        if (index === 1) return 'opacity-90' // Second
+                        if (index === 2) return 'opacity-80' // Third
+                        if (index < 5) return 'opacity-70' // Top 5
+                        return 'opacity-60' // Others
+                    }
+                    
+                    // Calculate border color based on ranking (all green with varying intensity)
+                    const getBorderColor = () => {
+                        if (!searchTerm) return 'border-gray-200'
+                        if (!card.hasMatch) return 'border-gray-200'
+                        if (index === 0) return 'border-green-600' // Most accurate - dark green
+                        if (index === 1) return 'border-green-500' // Second - medium green
+                        if (index === 2) return 'border-green-400' // Third - light green
+                        if (index < 5) return 'border-green-300' // Top 5 - lighter green
+                        return 'border-green-200' // Others - lightest green
+                    }
+                    
+                    // Calculate background color based on ranking (all green with varying intensity)
+                    const getBackgroundColor = () => {
+                        if (!searchTerm) return 'bg-white'
+                        if (!card.hasMatch) return 'bg-gray-50'
+                        if (index === 0) return 'bg-green-100' // Most accurate - dark green
+                        if (index === 1) return 'bg-green-50' // Second - medium green
+                        if (index === 2) return 'bg-green-25' // Third - light green
+                        if (index < 5) return 'bg-green-25' // Top 5 - lighter green
+                        return 'bg-green-25' // Others - lightest green
+                    }
                     
                     return (
                         <div 
                             key={card.id}
-                            className={`relative border rounded-lg p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] min-h-[200px] flex flex-col group ${
-                                isFirstCard 
-                                    ? 'border-green-500 bg-green-50 hover:bg-green-100' 
-                                    : card.hasMatch
-                                    ? 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
-                                    : 'border-gray-200 bg-white opacity-80 hover:opacity-100'
-                            }`}
+                            onClick={() => handleCardClick(card)}
+                            className={`relative border rounded-lg p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] min-h-[200px] flex flex-col group ${getCardOpacity()} ${getBorderColor()} ${getBackgroundColor()} hover:opacity-100`}
                         >
+                            {/* Favorite Button */}
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    toggleFavorite(card.id)
+                                }}
+                                className={`absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 ${
+                                    favorites.has(card.id)
+                                        ? 'text-red-500 bg-red-50 hover:bg-red-100'
+                                        : 'text-gray-400 hover:text-red-500 hover:bg-red-50'
+                                }`}
+                            >
+                                <svg className="w-4 h-4" fill={favorites.has(card.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                            </button>
+                            
+                            {/* Search Result Ranking */}
+                            {searchTerm && card.hasMatch && (
+                                <div className="absolute top-3 left-3">
+                                    <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-full">
+                                        #{index + 1}
+                                    </span>
+                                </div>
+                            )}
+                            
                             {/* Card Icon */}
                             <div className="flex justify-center mb-4">
-                                <div className={`transition-transform duration-300 group-hover:scale-110 ${isFirstCard ? 'text-green-600' : card.hasMatch ? 'text-gray-600' : 'text-gray-400'}`}>
+                                <div className={`transition-transform duration-300 group-hover:scale-110 ${
+                                    !searchTerm ? 'text-gray-600' :
+                                    !card.hasMatch ? 'text-gray-400' :
+                                    index === 0 ? 'text-green-700' : // Most accurate - dark green
+                                    index === 1 ? 'text-green-600' : // Second - medium green
+                                    index === 2 ? 'text-green-500' : // Third - light green
+                                    index < 5 ? 'text-green-400' : // Top 5 - lighter green
+                                    'text-green-300' // Others - lightest green
+                                }`}>
                                     {card.icon}
                                 </div>
                             </div>
                             
                             {/* Card Name */}
                             <h3 className={`font-semibold text-center text-base mb-3 ${
-                                isFirstCard ? 'text-gray-900' : card.hasMatch ? 'text-gray-900' : 'text-gray-700'
+                                !searchTerm ? 'text-gray-900' :
+                                !card.hasMatch ? 'text-gray-700' :
+                                index === 0 ? 'text-green-900' : // Most accurate - darkest green
+                                index === 1 ? 'text-green-800' : // Second - dark green
+                                index === 2 ? 'text-green-700' : // Third - medium green
+                                index < 5 ? 'text-green-600' : // Top 5 - light green
+                                'text-green-500' // Others - lighter green
                             }`}>
                                 {card.name[language]}
                             </h3>
                             
                             {/* Card Description */}
                             <p className={`text-sm text-center leading-relaxed mb-4 flex-grow ${
-                                isFirstCard ? 'text-gray-700' : card.hasMatch ? 'text-gray-600' : 'text-gray-600'
+                                !searchTerm ? 'text-gray-600' :
+                                !card.hasMatch ? 'text-gray-600' :
+                                index === 0 ? 'text-green-800' : // Most accurate - dark green
+                                index === 1 ? 'text-green-700' : // Second - medium green
+                                index === 2 ? 'text-green-600' : // Third - light green
+                                index < 5 ? 'text-green-500' : // Top 5 - lighter green
+                                'text-green-400' // Others - lightest green
                             }`}>
                                 {card.description[language]}
                             </p>
@@ -436,9 +550,11 @@ function SearchBar() {
                             {card.hasMatch && (
                                 <div className="mt-auto text-center">
                                     <span className={`text-xs px-2 py-1 rounded ${
-                                        isFirstCard 
-                                            ? 'text-green-600 bg-green-50' 
-                                            : 'text-gray-500 bg-gray-100'
+                                        index === 0 ? 'text-green-800 bg-green-200' : // Most accurate - dark green
+                                        index === 1 ? 'text-green-700 bg-green-100' : // Second - medium green
+                                        index === 2 ? 'text-green-600 bg-green-50' : // Third - light green
+                                        index < 5 ? 'text-green-500 bg-green-50' : // Top 5 - lighter green
+                                        'text-green-400 bg-green-25' // Others - lightest green
                                     }`}>
                                         {card.category.charAt(0).toUpperCase() + card.category.slice(1)}
                                     </span>
