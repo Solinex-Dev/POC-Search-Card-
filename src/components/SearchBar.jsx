@@ -1,5 +1,5 @@
 import { Search, X, DollarSign, TrendingUp, PieChart, Building, BarChart3, Target } from 'lucide-react'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 
 /**
  * SearchBar Component - Search Interface with Financial Service Cards
@@ -14,13 +14,25 @@ import { useState, useRef } from 'react'
 function SearchBar() {
     // State management
     const [searchTerm, setSearchTerm] = useState('')
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
     const [searchHistory, setSearchHistory] = useState([])
     const [language, setLanguage] = useState('th') // 'th' or 'en'
     const [selectedCategory, setSelectedCategory] = useState('all')
     const [favorites, setFavorites] = useState(new Set())
+    const [focusedCardIndex, setFocusedCardIndex] = useState(-1)
+    const [showSuggestions, setShowSuggestions] = useState(false)
     
     // Refs
     const inputRef = useRef(null)
+    
+    // Debounce search term
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm)
+        }, 300)
+        
+        return () => clearTimeout(timer)
+    }, [searchTerm])
     
     // Financial service cards data with bilingual support
     const cards = [
@@ -30,7 +42,7 @@ function SearchBar() {
                 th: "การจัดการความมั่งคั่ง",
                 en: "Wealth Management"
             },
-            icon: <DollarSign className="w-8 h-8" />, 
+                    icon: <DollarSign className="w-12 h-12" />,
             keywords: ["finance", "money", "wealth", "management", "budget", "expense", "financial"], 
             category: "finance", 
             description: {
@@ -44,7 +56,7 @@ function SearchBar() {
                 th: "การวางแผนทางการเงิน",
                 en: "Financial Planning"
             },
-            icon: <BarChart3 className="w-8 h-8" />, 
+                    icon: <BarChart3 className="w-12 h-12" />,
             keywords: ["planning", "financial", "plan", "future", "strategy", "budget"], 
             category: "investment", 
             description: {
@@ -58,7 +70,7 @@ function SearchBar() {
                 th: "การติดตามทรัพย์สิน",
                 en: "Asset Tracking"
             },
-            icon: <Building className="w-8 h-8" />, 
+                    icon: <Building className="w-12 h-12" />,
             keywords: ["assets", "tracking", "property", "monitoring", "inventory"], 
             category: "investment", 
             description: {
@@ -72,7 +84,7 @@ function SearchBar() {
                 th: "การวิเคราะห์การลงทุน",
                 en: "Investment Analysis"
             },
-            icon: <Target className="w-8 h-8" />, 
+                    icon: <Target className="w-12 h-12" />,
             keywords: ["investment", "analysis", "stocks", "portfolio", "trading"], 
             category: "credit", 
             description: {
@@ -86,7 +98,7 @@ function SearchBar() {
                 th: "การตั้งเป้าหมาย",
                 en: "Goal Setting"
             },
-            icon: <PieChart className="w-8 h-8" />, 
+                    icon: <PieChart className="w-12 h-12" />,
             keywords: ["goals", "targets", "planning", "objectives", "savings"], 
             category: "investment", 
             description: {
@@ -100,7 +112,7 @@ function SearchBar() {
                 th: "รายงานและการวิเคราะห์",
                 en: "Reports and Analysis"
             },
-            icon: <TrendingUp className="w-8 h-8" />, 
+                    icon: <TrendingUp className="w-12 h-12" />,
             keywords: ["reports", "analysis", "data", "insights", "statistics"], 
             category: "savings", 
             description: {
@@ -196,7 +208,7 @@ function SearchBar() {
         }
         
         // Then apply search filter
-        if (!searchTerm.trim()) return filteredCards
+        if (!debouncedSearchTerm.trim()) return filteredCards
         
         return filteredCards.map(card => {
             let bestMatch = null
@@ -204,14 +216,14 @@ function SearchBar() {
             let totalScore = 0
             
             // Check card name match (weighted highest) - use the correct language
-            const nameMatch = fuzzyMatch(card.name[language], searchTerm)
+            const nameMatch = fuzzyMatch(card.name[language], debouncedSearchTerm)
             if (nameMatch.matched) {
                 bestScore = Math.max(bestScore, nameMatch.score)
                 totalScore += nameMatch.score * 3 // Higher weight for name matches
             }
             
             // Check category match (weighted high)
-            const categoryMatch = fuzzyMatch(card.category, searchTerm)
+            const categoryMatch = fuzzyMatch(card.category, debouncedSearchTerm)
             if (categoryMatch.matched) {
                 bestScore = Math.max(bestScore, categoryMatch.score)
                 totalScore += categoryMatch.score * 2.5
@@ -224,7 +236,7 @@ function SearchBar() {
             const currentCategory = categories.find(cat => cat.id === card.category)
             if (currentCategory) {
                 const categoryKeywordMatches = currentCategory.keywords.map(keyword => {
-                    const match = fuzzyMatch(keyword, searchTerm)
+                    const match = fuzzyMatch(keyword, debouncedSearchTerm)
                     if (match.matched) {
                         bestScore = Math.max(bestScore, match.score)
                         totalScore += match.score * 2
@@ -238,7 +250,7 @@ function SearchBar() {
             
             // Check card keywords for matches
             const keywordMatches = card.keywords.map(keyword => {
-                const match = fuzzyMatch(keyword, searchTerm)
+                const match = fuzzyMatch(keyword, debouncedSearchTerm)
                 if (match.matched) {
                     bestScore = Math.max(bestScore, match.score)
                     totalScore += match.score
@@ -300,9 +312,32 @@ function SearchBar() {
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault()
-            handleSearch()
+            if (focusedCardIndex >= 0) {
+                // If a card is focused, click it
+                const focusedCard = filteredCards[focusedCardIndex]
+                if (focusedCard) {
+                    handleCardClick(focusedCard)
+                }
+            } else {
+                // Otherwise, perform search
+                handleSearch()
+            }
         } else if (e.key === 'Escape') {
             inputRef.current?.blur()
+            setFocusedCardIndex(-1)
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault()
+            setFocusedCardIndex(prev => 
+                prev < filteredCards.length - 1 ? prev + 1 : 0
+            )
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault()
+            setFocusedCardIndex(prev => 
+                prev > 0 ? prev - 1 : filteredCards.length - 1
+            )
+        } else if (e.key === 'Tab') {
+            // Allow default tab behavior for category filters
+            setFocusedCardIndex(-1)
         }
     }
 
@@ -338,6 +373,68 @@ function SearchBar() {
         alert(`${language === 'th' ? 'คลิกที่การ์ด:' : 'Clicked card:'} ${card.name[language]}`)
     }
 
+    /**
+     * Highlight search terms in text
+     */
+    const highlightText = (text, searchTerm) => {
+        if (!searchTerm.trim()) return text
+        
+        const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
+        const parts = text.split(regex)
+        
+        return parts.map((part, index) => 
+            regex.test(part) ? (
+                <mark key={index} className="bg-yellow-200 text-yellow-900 px-1 rounded">
+                    {part}
+                </mark>
+            ) : part
+        )
+    }
+
+    /**
+     * Get search suggestions based on current input
+     */
+    const getSearchSuggestions = () => {
+        if (!searchTerm.trim() || searchTerm.length < 2) return []
+        
+        const suggestions = new Set()
+        const searchLower = searchTerm.toLowerCase()
+        
+        // Add card names
+        cards.forEach(card => {
+            const name = card.name[language].toLowerCase()
+            if (name.includes(searchLower)) {
+                suggestions.add(card.name[language])
+            }
+        })
+        
+        // Add category names
+        categories.forEach(category => {
+            const name = category.name[language].toLowerCase()
+            if (name.includes(searchLower)) {
+                suggestions.add(category.name[language])
+            }
+        })
+        
+        // Add popular keywords
+        const popularKeywords = [
+            { th: 'การเงิน', en: 'finance' },
+            { th: 'การลงทุน', en: 'investment' },
+            { th: 'งบประมาณ', en: 'budget' },
+            { th: 'เครดิต', en: 'credit' },
+            { th: 'การออม', en: 'savings' }
+        ]
+        
+        popularKeywords.forEach(keyword => {
+            const keywordText = keyword[language].toLowerCase()
+            if (keywordText.includes(searchLower)) {
+                suggestions.add(keyword[language])
+            }
+        })
+        
+        return Array.from(suggestions).slice(0, 5) // Limit to 5 suggestions
+    }
+
 
     const filteredCards = getFilteredCards()
 
@@ -364,7 +461,9 @@ function SearchBar() {
                         value={searchTerm}
                         onChange={(e) => handleSearchChange(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        className="w-full h-9 min-w-0 rounded-md border border-gray-200 bg-white px-3 py-1 text-base text-gray-900 shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-blue-500 focus-visible:ring-blue-500/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm placeholder:text-gray-400 selection:bg-blue-500 selection:text-white"
+                        onFocus={() => setShowSuggestions(true)}
+                        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                        className="w-full h-9 min-w-0 rounded-md border border-gray-200 bg-white px-3 py-1 text-base text-gray-900 shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-emerald-500 focus-visible:ring-emerald-500/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm placeholder:text-gray-400 selection:bg-emerald-500 selection:text-white"
                     />
                     
                     {/* Search Icon */}
@@ -381,6 +480,29 @@ function SearchBar() {
                     )}
                 </div>
 
+                {/* Search Suggestions Dropdown */}
+                {showSuggestions && searchTerm.length >= 2 && (() => {
+                    const suggestions = getSearchSuggestions()
+                    return suggestions.length > 0 && (
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto">
+                            <div className="py-2">
+                                {suggestions.map((suggestion, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => {
+                                            setSearchTerm(suggestion)
+                                            setShowSuggestions(false)
+                                            inputRef.current?.focus()
+                                        }}
+                                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                                    >
+                                        {highlightText(suggestion, searchTerm)}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                })()}
             </div>
 
             {/* Category Filter Pills */}
@@ -389,11 +511,11 @@ function SearchBar() {
                     <button
                         key={category.id}
                         onClick={() => setSelectedCategory(category.id)}
-                        className={`px-3 py-1 text-sm font-medium rounded-full transition-all duration-200 ${
-                            selectedCategory === category.id
-                                ? 'bg-blue-500 text-white shadow-md'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                        }`}
+                                className={`px-3 py-1 text-sm font-medium rounded-full transition-all duration-200 ${
+                                    selectedCategory === category.id
+                                        ? 'bg-emerald-500 text-white shadow-md'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                }`}
                     >
                         {category.name[language]}
                     </button>
@@ -402,7 +524,7 @@ function SearchBar() {
 
 
             {/* No Results State */}
-            {searchTerm && filteredCards.filter(card => card.hasMatch).length === 0 && (
+            {debouncedSearchTerm && filteredCards.filter(card => card.hasMatch).length === 0 && (
                 <div className="text-center py-12">
                     <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
                         <Search className="w-8 h-8 text-gray-400" />
@@ -417,12 +539,12 @@ function SearchBar() {
                         }
                     </p>
                     <div className="flex flex-wrap justify-center gap-2">
-                        <button
-                            onClick={() => setSearchTerm('')}
-                            className="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
-                        >
-                            {language === 'th' ? 'ล้างการค้นหา' : 'Clear search'}
-                        </button>
+                                <button
+                                    onClick={() => setSearchTerm('')}
+                                    className="px-4 py-2 text-sm font-medium text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors"
+                                >
+                                    {language === 'th' ? 'ล้างการค้นหา' : 'Clear search'}
+                                </button>
                         <button
                             onClick={() => setSelectedCategory('all')}
                             className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
@@ -442,7 +564,7 @@ function SearchBar() {
                     
                     // Calculate opacity based on ranking (most accurate = highest opacity)
                     const getCardOpacity = () => {
-                        if (!searchTerm) return 'opacity-100'
+                        if (!debouncedSearchTerm) return 'opacity-100'
                         if (!card.hasMatch) return 'opacity-40'
                         if (index === 0) return 'opacity-100' // Most accurate
                         if (index === 1) return 'opacity-90' // Second
@@ -451,33 +573,39 @@ function SearchBar() {
                         return 'opacity-60' // Others
                     }
                     
-                    // Calculate border color based on ranking (all green with varying intensity)
-                    const getBorderColor = () => {
-                        if (!searchTerm) return 'border-gray-200'
-                        if (!card.hasMatch) return 'border-gray-200'
-                        if (index === 0) return 'border-green-600' // Most accurate - dark green
-                        if (index === 1) return 'border-green-500' // Second - medium green
-                        if (index === 2) return 'border-green-400' // Third - light green
-                        if (index < 5) return 'border-green-300' // Top 5 - lighter green
-                        return 'border-green-200' // Others - lightest green
-                    }
+                            // Calculate border color based on ranking (emerald theme)
+                            const getBorderColor = () => {
+                                if (!debouncedSearchTerm) return 'border-gray-200'
+                                if (!card.hasMatch) return 'border-gray-200'
+                                if (index === 0) return 'border-emerald-600' // Most accurate - dark emerald
+                                if (index === 1) return 'border-emerald-500' // Second - medium emerald
+                                if (index === 2) return 'border-emerald-400' // Third - light emerald
+                                if (index < 5) return 'border-emerald-300' // Top 5 - lighter emerald
+                                return 'border-emerald-200' // Others - lightest emerald
+                            }
                     
-                    // Calculate background color based on ranking (all green with varying intensity)
-                    const getBackgroundColor = () => {
-                        if (!searchTerm) return 'bg-white'
-                        if (!card.hasMatch) return 'bg-gray-50'
-                        if (index === 0) return 'bg-green-100' // Most accurate - dark green
-                        if (index === 1) return 'bg-green-50' // Second - medium green
-                        if (index === 2) return 'bg-green-25' // Third - light green
-                        if (index < 5) return 'bg-green-25' // Top 5 - lighter green
-                        return 'bg-green-25' // Others - lightest green
-                    }
+                            // Calculate background color based on ranking (emerald theme)
+                            const getBackgroundColor = () => {
+                                if (!debouncedSearchTerm) return 'bg-white'
+                                if (!card.hasMatch) return 'bg-gray-50'
+                                if (index === 0) return 'bg-emerald-50' // Most accurate - light emerald
+                                if (index === 1) return 'bg-emerald-25' // Second - very light emerald
+                                if (index === 2) return 'bg-emerald-25' // Third - very light emerald
+                                if (index < 5) return 'bg-emerald-25' // Top 5 - very light emerald
+                                return 'bg-emerald-25' // Others - very light emerald
+                            }
+                    
+                    const isFocused = focusedCardIndex === index
                     
                     return (
                         <div 
                             key={card.id}
                             onClick={() => handleCardClick(card)}
-                            className={`relative border rounded-lg p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] min-h-[200px] flex flex-col group ${getCardOpacity()} ${getBorderColor()} ${getBackgroundColor()} hover:opacity-100`}
+                            onMouseEnter={() => setFocusedCardIndex(index)}
+                            className={`relative border rounded-lg p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] min-h-[200px] flex flex-col group ${getCardOpacity()} ${getBorderColor()} ${getBackgroundColor()} hover:opacity-100 ${
+                                isFocused ? 'ring-2 ring-blue-500 ring-opacity-50' : ''
+                            }`}
+                            tabIndex={0}
                         >
                             {/* Favorite Button */}
                             <button
@@ -496,66 +624,58 @@ function SearchBar() {
                                 </svg>
                             </button>
                             
-                            {/* Search Result Ranking */}
-                            {searchTerm && card.hasMatch && (
-                                <div className="absolute top-3 left-3">
-                                    <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-full">
-                                        #{index + 1}
-                                    </span>
-                                </div>
-                            )}
                             
                             {/* Card Icon */}
                             <div className="flex justify-center mb-4">
-                                <div className={`transition-transform duration-300 group-hover:scale-110 ${
-                                    !searchTerm ? 'text-gray-600' :
-                                    !card.hasMatch ? 'text-gray-400' :
-                                    index === 0 ? 'text-green-700' : // Most accurate - dark green
-                                    index === 1 ? 'text-green-600' : // Second - medium green
-                                    index === 2 ? 'text-green-500' : // Third - light green
-                                    index < 5 ? 'text-green-400' : // Top 5 - lighter green
-                                    'text-green-300' // Others - lightest green
-                                }`}>
+                                        <div className={`transition-transform duration-300 group-hover:scale-110 ${
+                                            !debouncedSearchTerm ? 'text-gray-600' :
+                                            !card.hasMatch ? 'text-gray-400' :
+                                            index === 0 ? 'text-emerald-700' : // Most accurate - dark emerald
+                                            index === 1 ? 'text-emerald-600' : // Second - medium emerald
+                                            index === 2 ? 'text-emerald-500' : // Third - light emerald
+                                            index < 5 ? 'text-emerald-400' : // Top 5 - lighter emerald
+                                            'text-emerald-300' // Others - lightest emerald
+                                        }`}>
                                     {card.icon}
                                 </div>
                             </div>
                             
                             {/* Card Name */}
-                            <h3 className={`font-semibold text-center text-base mb-3 ${
-                                !searchTerm ? 'text-gray-900' :
-                                !card.hasMatch ? 'text-gray-700' :
-                                index === 0 ? 'text-green-900' : // Most accurate - darkest green
-                                index === 1 ? 'text-green-800' : // Second - dark green
-                                index === 2 ? 'text-green-700' : // Third - medium green
-                                index < 5 ? 'text-green-600' : // Top 5 - light green
-                                'text-green-500' // Others - lighter green
-                            }`}>
-                                {card.name[language]}
+                                    <h3 className={`font-semibold text-center text-base mb-3 ${
+                                        !debouncedSearchTerm ? 'text-gray-900' :
+                                        !card.hasMatch ? 'text-gray-700' :
+                                        index === 0 ? 'text-emerald-900' : // Most accurate - darkest emerald
+                                        index === 1 ? 'text-emerald-800' : // Second - dark emerald
+                                        index === 2 ? 'text-emerald-700' : // Third - medium emerald
+                                        index < 5 ? 'text-emerald-600' : // Top 5 - light emerald
+                                        'text-emerald-500' // Others - lighter emerald
+                                    }`}>
+                                {highlightText(card.name[language], searchTerm)}
                             </h3>
                             
                             {/* Card Description */}
-                            <p className={`text-sm text-center leading-relaxed mb-4 flex-grow ${
-                                !searchTerm ? 'text-gray-600' :
-                                !card.hasMatch ? 'text-gray-600' :
-                                index === 0 ? 'text-green-800' : // Most accurate - dark green
-                                index === 1 ? 'text-green-700' : // Second - medium green
-                                index === 2 ? 'text-green-600' : // Third - light green
-                                index < 5 ? 'text-green-500' : // Top 5 - lighter green
-                                'text-green-400' // Others - lightest green
-                            }`}>
-                                {card.description[language]}
+                                    <p className={`text-sm text-center leading-relaxed mb-4 flex-grow ${
+                                        !debouncedSearchTerm ? 'text-gray-600' :
+                                        !card.hasMatch ? 'text-gray-600' :
+                                        index === 0 ? 'text-emerald-800' : // Most accurate - dark emerald
+                                        index === 1 ? 'text-emerald-700' : // Second - medium emerald
+                                        index === 2 ? 'text-emerald-600' : // Third - light emerald
+                                        index < 5 ? 'text-emerald-500' : // Top 5 - lighter emerald
+                                        'text-emerald-400' // Others - lightest emerald
+                                    }`}>
+                                {highlightText(card.description[language], searchTerm)}
                             </p>
 
                             {/* Subtle Category for Matching Cards */}
                             {card.hasMatch && (
                                 <div className="mt-auto text-center">
-                                    <span className={`text-xs px-2 py-1 rounded ${
-                                        index === 0 ? 'text-green-800 bg-green-200' : // Most accurate - dark green
-                                        index === 1 ? 'text-green-700 bg-green-100' : // Second - medium green
-                                        index === 2 ? 'text-green-600 bg-green-50' : // Third - light green
-                                        index < 5 ? 'text-green-500 bg-green-50' : // Top 5 - lighter green
-                                        'text-green-400 bg-green-25' // Others - lightest green
-                                    }`}>
+                                            <span className={`text-xs px-2 py-1 rounded ${
+                                                index === 0 ? 'text-emerald-800 bg-emerald-200' : // Most accurate - dark emerald
+                                                index === 1 ? 'text-emerald-700 bg-emerald-100' : // Second - medium emerald
+                                                index === 2 ? 'text-emerald-600 bg-emerald-50' : // Third - light emerald
+                                                index < 5 ? 'text-emerald-500 bg-emerald-50' : // Top 5 - lighter emerald
+                                                'text-emerald-400 bg-emerald-25' // Others - lightest emerald
+                                            }`}>
                                         {card.category.charAt(0).toUpperCase() + card.category.slice(1)}
                                     </span>
                                 </div>
