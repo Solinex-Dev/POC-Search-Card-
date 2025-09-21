@@ -296,12 +296,19 @@ function SearchBar() {
                         </span>
                         <span className="text-sm font-semibold text-blue-600">"{searchTerm}"</span>
                     </div>
-                    <p className="text-sm text-gray-500">
-                        {language === 'th' 
-                            ? `พบ ${filteredCards.filter(card => card.hasMatch).length} รายการ`
-                            : `${filteredCards.filter(card => card.hasMatch).length} result(s) found`
-                        }
-                    </p>
+                    <div className="flex items-center justify-center gap-2">
+                        <p className="text-sm text-gray-500">
+                            {language === 'th' 
+                                ? `พบ ${filteredCards.filter(card => card.hasMatch).length} จาก ${cards.length} รายการ`
+                                : `${filteredCards.filter(card => card.hasMatch).length} of ${cards.length} results`
+                            }
+                        </p>
+                        {filteredCards.filter(card => card.hasMatch).length > 0 && (
+                            <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-600 bg-green-100 rounded-full">
+                                {language === 'th' ? 'พบผลลัพธ์' : 'Found'}
+                            </span>
+                        )}
+                    </div>
                 </div>
             )}
 
