@@ -33,7 +33,7 @@ function SearchBar() {
         return () => clearTimeout(timer)
     }, [searchTerm])
     
-    // Financial service cards data with bilingual support
+    // Financial service cards data with comprehensive bilingual support
     const cards = [
         { 
             id: 1, 
@@ -41,8 +41,17 @@ function SearchBar() {
                 th: "การจัดการความมั่งคั่ง",
                 en: "Wealth Management"
             },
-                    icon: <DollarSign className="w-12 h-12" />,
-            keywords: ["finance", "money", "wealth", "management", "budget", "expense", "financial"], 
+            icon: <DollarSign className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "wealth", "management", "wealth management", "portfolio", "investment", "finance", "financial", 
+                "money", "budget", "expense", "income", "assets", "capital", "funds", "savings", "planning",
+                "strategy", "advisor", "advisory", "consulting", "planning", "retirement", "estate",
+                // Thai keywords
+                "ความมั่งคั่ง", "การจัดการ", "การจัดการความมั่งคั่ง", "พอร์ตโฟลิโอ", "การลงทุน", "การเงิน", 
+                "เงิน", "งบประมาณ", "รายจ่าย", "รายได้", "ทรัพย์สิน", "ทุน", "กองทุน", "การออม", "การวางแผน",
+                "กลยุทธ์", "ที่ปรึกษา", "การให้คำปรึกษา", "การวางแผน", "การเกษียณ", "มรดก"
+            ], 
             category: "finance", 
             description: {
                 th: "ติดตามและจัดการพอร์ตโฟลิโอความมั่งคั่งของครอบครัว",
@@ -55,8 +64,17 @@ function SearchBar() {
                 th: "การวางแผนทางการเงิน",
                 en: "Financial Planning"
             },
-                    icon: <BarChart3 className="w-12 h-12" />,
-            keywords: ["planning", "financial", "plan", "future", "strategy", "budget"], 
+            icon: <BarChart3 className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "planning", "financial planning", "financial", "plan", "future", "strategy", "budget", 
+                "budgeting", "forecast", "projection", "roadmap", "blueprint", "schedule", "timeline",
+                "goals", "objectives", "targets", "milestones", "roadmap", "framework", "methodology",
+                // Thai keywords
+                "การวางแผน", "การวางแผนทางการเงิน", "การเงิน", "แผน", "อนาคต", "กลยุทธ์", "งบประมาณ", 
+                "การทำงบประมาณ", "การคาดการณ์", "การคาดคะเน", "แผนงาน", "โครงร่าง", "ตารางเวลา", "ไทม์ไลน์",
+                "เป้าหมาย", "วัตถุประสงค์", "จุดหมาย", "หมุดหมาย", "แผนงาน", "กรอบงาน", "ระเบียบวิธี"
+            ], 
             category: "investment", 
             description: {
                 th: "วางแผนอนาคตทางการเงินของครอบครัว",
@@ -69,8 +87,17 @@ function SearchBar() {
                 th: "การติดตามทรัพย์สิน",
                 en: "Asset Tracking"
             },
-                    icon: <Building className="w-12 h-12" />,
-            keywords: ["assets", "tracking", "property", "monitoring", "inventory"], 
+            icon: <Building className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "assets", "tracking", "asset tracking", "property", "monitoring", "inventory", "portfolio",
+                "holdings", "investments", "valuables", "possessions", "belongings", "equity", "ownership",
+                "real estate", "stocks", "bonds", "mutual funds", "etf", "crypto", "gold", "silver",
+                // Thai keywords
+                "ทรัพย์สิน", "การติดตาม", "การติดตามทรัพย์สิน", "อสังหาริมทรัพย์", "การตรวจสอบ", "สินค้าคงคลัง", "พอร์ตโฟลิโอ",
+                "การถือครอง", "การลงทุน", "ของมีค่า", "ทรัพย์สมบัติ", "ของใช้", "หุ้น", "กรรมสิทธิ์",
+                "อสังหาริมทรัพย์", "หุ้น", "พันธบัตร", "กองทุนรวม", "กองทุน", "คริปโต", "ทอง", "เงิน"
+            ], 
             category: "investment", 
             description: {
                 th: "ติดตามทรัพย์สินทั้งหมดของครอบครัวในที่เดียว",
@@ -83,8 +110,19 @@ function SearchBar() {
                 th: "การวิเคราะห์การลงทุน",
                 en: "Investment Analysis"
             },
-                    icon: <Target className="w-12 h-12" />,
-            keywords: ["investment", "analysis", "stocks", "portfolio", "trading"], 
+            icon: <Target className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "investment", "analysis", "investment analysis", "stocks", "portfolio", "trading", "market",
+                "research", "evaluation", "assessment", "review", "study", "examination", "inspection",
+                "performance", "returns", "profit", "loss", "risk", "volatility", "diversification", "allocation",
+                "technical analysis", "fundamental analysis", "chart", "pattern", "trend", "indicator",
+                // Thai keywords
+                "การลงทุน", "การวิเคราะห์", "การวิเคราะห์การลงทุน", "หุ้น", "พอร์ตโฟลิโอ", "การซื้อขาย", "ตลาด",
+                "การวิจัย", "การประเมิน", "การประเมินค่า", "การทบทวน", "การศึกษา", "การตรวจสอบ", "การตรวจ",
+                "ผลการดำเนินงาน", "ผลตอบแทน", "กำไร", "ขาดทุน", "ความเสี่ยง", "ความผันผวน", "การกระจายความเสี่ยง", "การจัดสรร",
+                "การวิเคราะห์ทางเทคนิค", "การวิเคราะห์พื้นฐาน", "กราฟ", "รูปแบบ", "แนวโน้ม", "ตัวชี้วัด"
+            ], 
             category: "credit", 
             description: {
                 th: "วิเคราะห์และปรับปรุงการลงทุนของคุณ",
@@ -97,8 +135,19 @@ function SearchBar() {
                 th: "การตั้งเป้าหมาย",
                 en: "Goal Setting"
             },
-                    icon: <PieChart className="w-12 h-12" />,
-            keywords: ["goals", "targets", "planning", "objectives", "savings"], 
+            icon: <PieChart className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "goals", "goal setting", "targets", "planning", "objectives", "savings", "target",
+                "aim", "purpose", "mission", "vision", "ambition", "aspiration", "dream", "wish",
+                "financial goals", "savings goals", "investment goals", "retirement goals", "education goals",
+                "milestone", "benchmark", "kpi", "metric", "measurement", "tracking", "monitoring",
+                // Thai keywords
+                "เป้าหมาย", "การตั้งเป้าหมาย", "จุดหมาย", "การวางแผน", "วัตถุประสงค์", "การออม", "เป้า",
+                "จุดมุ่งหมาย", "จุดประสงค์", "ภารกิจ", "วิสัยทัศน์", "ความทะเยอทะยาน", "ความปรารถนา", "ความฝัน", "ความหวัง",
+                "เป้าหมายทางการเงิน", "เป้าหมายการออม", "เป้าหมายการลงทุน", "เป้าหมายการเกษียณ", "เป้าหมายการศึกษา",
+                "หมุดหมาย", "เกณฑ์มาตรฐาน", "ตัวชี้วัด", "เมตริก", "การวัด", "การติดตาม", "การตรวจสอบ"
+            ], 
             category: "investment", 
             description: {
                 th: "ตั้งและติดตามเป้าหมายทางการเงิน",
@@ -111,8 +160,21 @@ function SearchBar() {
                 th: "รายงานและการวิเคราะห์",
                 en: "Reports and Analysis"
             },
-                    icon: <TrendingUp className="w-12 h-12" />,
-            keywords: ["reports", "analysis", "data", "insights", "statistics"], 
+            icon: <TrendingUp className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "reports", "analysis", "reports and analysis", "data", "insights", "statistics", "analytics",
+                "dashboard", "metrics", "kpi", "performance", "summary", "overview", "review", "audit",
+                "financial reports", "monthly reports", "quarterly reports", "annual reports", "statements",
+                "charts", "graphs", "visualization", "trends", "patterns", "forecasting", "prediction",
+                "business intelligence", "data analysis", "reporting", "documentation", "record keeping",
+                // Thai keywords
+                "รายงาน", "การวิเคราะห์", "รายงานและการวิเคราะห์", "ข้อมูล", "ข้อมูลเชิงลึก", "สถิติ", "การวิเคราะห์",
+                "แดชบอร์ด", "เมตริก", "ตัวชี้วัด", "ผลการดำเนินงาน", "สรุป", "ภาพรวม", "การทบทวน", "การตรวจสอบ",
+                "รายงานทางการเงิน", "รายงานรายเดือน", "รายงานรายไตรมาส", "รายงานรายปี", "งบการเงิน",
+                "แผนภูมิ", "กราฟ", "การแสดงภาพ", "แนวโน้ม", "รูปแบบ", "การคาดการณ์", "การทำนาย",
+                "ธุรกิจอัจฉริยะ", "การวิเคราะห์ข้อมูล", "การรายงาน", "การจัดทำเอกสาร", "การเก็บบันทึก"
+            ], 
             category: "savings", 
             description: {
                 th: "สร้างรายงานทางการเงินที่ละเอียด",
@@ -180,23 +242,52 @@ function SearchBar() {
 
     
     /**
-     * Enhanced fuzzy search algorithm
+     * Enhanced fuzzy search algorithm with better matching
      */
     const fuzzyMatch = (str, pattern) => {
         const strLower = str.toLowerCase().trim()
         const patternLower = pattern.toLowerCase().trim()
         
         if (patternLower === '') return { score: 0, matched: false }
-        if (strLower === patternLower) return { score: 100, matched: true }
-        if (strLower.startsWith(patternLower)) return { score: 90, matched: true }
-        if (strLower.includes(patternLower)) return { score: 70, matched: true }
         
-        // Fuzzy matching for partial matches
+        // Exact match gets highest score
+        if (strLower === patternLower) return { score: 100, matched: true }
+        
+        // Starts with gets very high score
+        if (strLower.startsWith(patternLower)) return { score: 95, matched: true }
+        
+        // Contains gets high score
+        if (strLower.includes(patternLower)) return { score: 85, matched: true }
+        
+        // Word boundary matching (matches whole words)
+        const words = strLower.split(/\s+/)
+        for (const word of words) {
+            if (word === patternLower) return { score: 90, matched: true }
+            if (word.startsWith(patternLower)) return { score: 80, matched: true }
+            if (word.includes(patternLower)) return { score: 70, matched: true }
+        }
+        
+        // Enhanced fuzzy matching for partial matches
         let patternIdx = 0
         let consecutive = 0
         let maxConsecutive = 0
         let totalMatches = 0
+        let wordMatches = 0
         
+        // Check for word-level matches
+        const patternWords = patternLower.split(/\s+/)
+        const strWords = strLower.split(/\s+/)
+        
+        for (const pWord of patternWords) {
+            for (const sWord of strWords) {
+                if (sWord.includes(pWord)) {
+                    wordMatches++
+                    break
+                }
+            }
+        }
+        
+        // Character-level fuzzy matching
         for (let i = 0; i < strLower.length && patternIdx < patternLower.length; i++) {
             if (strLower[i] === patternLower[patternIdx]) {
                 patternIdx++
@@ -209,10 +300,16 @@ function SearchBar() {
         }
         
         if (patternIdx === patternLower.length) {
-            const completeness = (patternIdx / patternLower.length) * 50
-            const consecutiveness = (maxConsecutive / patternLower.length) * 30
-            const density = (totalMatches / strLower.length) * 20
-            return { score: completeness + consecutiveness + density, matched: true }
+            const completeness = (patternIdx / patternLower.length) * 40
+            const consecutiveness = (maxConsecutive / patternLower.length) * 25
+            const density = (totalMatches / strLower.length) * 15
+            const wordScore = (wordMatches / patternWords.length) * 20
+            return { score: completeness + consecutiveness + density + wordScore, matched: true }
+        }
+        
+        // If we have word matches, still consider it a match
+        if (wordMatches > 0) {
+            return { score: (wordMatches / patternWords.length) * 60, matched: true }
         }
         
         return { score: 0, matched: false }
@@ -241,7 +338,15 @@ function SearchBar() {
             const nameMatch = fuzzyMatch(card.name[language], debouncedSearchTerm)
             if (nameMatch.matched) {
                 bestScore = Math.max(bestScore, nameMatch.score)
-                totalScore += nameMatch.score * 3 // Higher weight for name matches
+                totalScore += nameMatch.score * 5 // Much higher weight for name matches
+            }
+            
+            // Also check the other language name for better matching
+            const otherLanguage = language === 'th' ? 'en' : 'th'
+            const otherNameMatch = fuzzyMatch(card.name[otherLanguage], debouncedSearchTerm)
+            if (otherNameMatch.matched) {
+                bestScore = Math.max(bestScore, otherNameMatch.score)
+                totalScore += otherNameMatch.score * 4 // High weight for other language name matches
             }
             
             // Check category match (weighted high)
@@ -300,6 +405,18 @@ function SearchBar() {
      */
     const handleSearchChange = (value) => {
         setSearchTerm(value)
+        
+        // Debug: Log search results for testing
+        if (value.trim().length > 0) {
+            console.log('🔍 Search Debug:', {
+                searchTerm: value,
+                results: getFilteredCards().filter(card => card.hasMatch).map(card => ({
+                    name: card.name[language],
+                    score: card.matchScore,
+                    bestMatch: card.bestMatch
+                }))
+            })
+        }
     }
 
     /**
@@ -420,19 +537,22 @@ function SearchBar() {
             }
         })
         
-        // Enhanced popular keywords with more specific examples
+        // Enhanced popular keywords with comprehensive examples
         const popularKeywords = [
+            // Card names (exact matches)
+            { th: 'การจัดการความมั่งคั่ง', en: 'Wealth Management' },
+            { th: 'การวางแผนทางการเงิน', en: 'Financial Planning' },
+            { th: 'การติดตามทรัพย์สิน', en: 'Asset Tracking' },
+            { th: 'การวิเคราะห์การลงทุน', en: 'Investment Analysis' },
+            { th: 'การตั้งเป้าหมาย', en: 'Goal Setting' },
+            { th: 'รายงานและการวิเคราะห์', en: 'Reports and Analysis' },
+            
+            // Financial terms
             { th: 'การเงิน', en: 'finance' },
             { th: 'การลงทุน', en: 'investment' },
             { th: 'งบประมาณ', en: 'budget' },
             { th: 'เครดิต', en: 'credit' },
             { th: 'การออม', en: 'savings' },
-            { th: 'การจัดการความมั่งคั่ง', en: 'wealth management' },
-            { th: 'การวางแผนทางการเงิน', en: 'financial planning' },
-            { th: 'การติดตามทรัพย์สิน', en: 'asset tracking' },
-            { th: 'การวิเคราะห์การลงทุน', en: 'investment analysis' },
-            { th: 'การตั้งเป้าหมาย', en: 'goal setting' },
-            { th: 'รายงาน', en: 'reports' },
             { th: 'พอร์ตโฟลิโอ', en: 'portfolio' },
             { th: 'หุ้น', en: 'stocks' },
             { th: 'พันธบัตร', en: 'bonds' },
@@ -448,7 +568,42 @@ function SearchBar() {
             { th: 'ภาษี', en: 'tax' },
             { th: 'การเกษียณ', en: 'retirement' },
             { th: 'การศึกษาของบุตร', en: 'education fund' },
-            { th: 'การประกัน', en: 'insurance' }
+            { th: 'การประกัน', en: 'insurance' },
+            
+            // Additional comprehensive terms
+            { th: 'การจัดการ', en: 'management' },
+            { th: 'การวางแผน', en: 'planning' },
+            { th: 'การติดตาม', en: 'tracking' },
+            { th: 'การวิเคราะห์', en: 'analysis' },
+            { th: 'การตั้งเป้า', en: 'goal setting' },
+            { th: 'รายงาน', en: 'reports' },
+            { th: 'ทรัพย์สิน', en: 'assets' },
+            { th: 'การวิจัย', en: 'research' },
+            { th: 'การประเมิน', en: 'evaluation' },
+            { th: 'ผลตอบแทน', en: 'returns' },
+            { th: 'ความเสี่ยง', en: 'risk' },
+            { th: 'การกระจายความเสี่ยง', en: 'diversification' },
+            { th: 'การจัดสรร', en: 'allocation' },
+            { th: 'กราฟ', en: 'charts' },
+            { th: 'แนวโน้ม', en: 'trends' },
+            { th: 'การคาดการณ์', en: 'forecasting' },
+            { th: 'แดชบอร์ด', en: 'dashboard' },
+            { th: 'เมตริก', en: 'metrics' },
+            { th: 'ตัวชี้วัด', en: 'kpi' },
+            { th: 'ผลการดำเนินงาน', en: 'performance' },
+            { th: 'สรุป', en: 'summary' },
+            { th: 'ภาพรวม', en: 'overview' },
+            { th: 'การทบทวน', en: 'review' },
+            { th: 'การตรวจสอบ', en: 'audit' },
+            { th: 'แผนภูมิ', en: 'graphs' },
+            { th: 'การแสดงภาพ', en: 'visualization' },
+            { th: 'รูปแบบ', en: 'patterns' },
+            { th: 'การทำนาย', en: 'prediction' },
+            { th: 'ธุรกิจอัจฉริยะ', en: 'business intelligence' },
+            { th: 'การวิเคราะห์ข้อมูล', en: 'data analysis' },
+            { th: 'การรายงาน', en: 'reporting' },
+            { th: 'การจัดทำเอกสาร', en: 'documentation' },
+            { th: 'การเก็บบันทึก', en: 'record keeping' }
         ]
         
         popularKeywords.forEach(keyword => {
