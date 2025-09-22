@@ -1,5 +1,5 @@
-import { Search, X, DollarSign, TrendingUp, PieChart, Building, BarChart3, Target } from 'lucide-react'
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { Search, X, DollarSign, TrendingUp, PieChart, Building, BarChart3, Target, Moon, Sun } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
 
 /**
  * SearchBar Component - Search Interface with Financial Service Cards
@@ -9,18 +9,17 @@ import { useState, useRef, useEffect, useCallback } from 'react'
  * - Financial service cards that filter based on search
  * - Keyboard navigation support
  * - Clean, modern design
- * - Search history
  */
 function SearchBar() {
     // State management
     const [searchTerm, setSearchTerm] = useState('')
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
-    const [searchHistory, setSearchHistory] = useState([])
     const [language, setLanguage] = useState('th') // 'th' or 'en'
     const [selectedCategory, setSelectedCategory] = useState('all')
     const [favorites, setFavorites] = useState(new Set())
     const [focusedCardIndex, setFocusedCardIndex] = useState(-1)
     const [showSuggestions, setShowSuggestions] = useState(false)
+    const [isDarkMode, setIsDarkMode] = useState(false)
     
     // Refs
     const inputRef = useRef(null)
@@ -126,6 +125,29 @@ function SearchBar() {
     const toggleLanguage = () => {
         setLanguage(prev => prev === 'th' ? 'en' : 'th')
     }
+
+    // Theme toggle function
+    const toggleTheme = () => {
+        setIsDarkMode(prev => {
+            const newMode = !prev
+            // Apply dark class to document for global dark mode
+            if (newMode) {
+                document.documentElement.classList.add('dark')
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+            return newMode
+        })
+    }
+
+    // Apply initial dark mode state on mount
+    useEffect(() => {
+        if (isDarkMode) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    }, [isDarkMode])
 
     // Get unique categories with search keywords
     const categories = [
@@ -235,7 +257,7 @@ function SearchBar() {
             // Check category keywords
             const currentCategory = categories.find(cat => cat.id === card.category)
             if (currentCategory) {
-                const categoryKeywordMatches = currentCategory.keywords.map(keyword => {
+                currentCategory.keywords.forEach(keyword => {
                     const match = fuzzyMatch(keyword, debouncedSearchTerm)
                     if (match.matched) {
                         bestScore = Math.max(bestScore, match.score)
@@ -244,8 +266,7 @@ function SearchBar() {
                             bestMatch = keyword
                         }
                     }
-                    return match
-                }).filter(match => match.matched)
+                })
             }
             
             // Check card keywords for matches
@@ -279,13 +300,6 @@ function SearchBar() {
      */
     const handleSearchChange = (value) => {
         setSearchTerm(value)
-        console.log('Search term changed:', value)
-        
-        // Simulate loading state for demo
-        if (value.trim()) {
-            setIsLoading(true)
-            setTimeout(() => setIsLoading(false), 300)
-        }
     }
 
     /**
@@ -293,16 +307,7 @@ function SearchBar() {
      */
     const handleSearch = (term = searchTerm) => {
         if (term.trim()) {
-            const trimmedTerm = term.trim()
-            setSearchTerm(trimmedTerm)
-            
-            // Add to search history
-            if (!searchHistory.includes(trimmedTerm)) {
-                setSearchHistory(prev => [trimmedTerm, ...prev.slice(0, 4)])
-            }
-            
-            // Here you would typically trigger the actual search
-            console.log('Searching for:', trimmedTerm)
+            setSearchTerm(term.trim())
         }
     }
 
@@ -368,7 +373,6 @@ function SearchBar() {
      * Handle card click
      */
     const handleCardClick = (card) => {
-        console.log('Card clicked:', card.name[language])
         // Here you would typically navigate to card details
         alert(`${language === 'th' ? 'คลิกที่การ์ด:' : 'Clicked card:'} ${card.name[language]}`)
     }
@@ -416,13 +420,35 @@ function SearchBar() {
             }
         })
         
-        // Add popular keywords
+        // Enhanced popular keywords with more specific examples
         const popularKeywords = [
             { th: 'การเงิน', en: 'finance' },
             { th: 'การลงทุน', en: 'investment' },
             { th: 'งบประมาณ', en: 'budget' },
             { th: 'เครดิต', en: 'credit' },
-            { th: 'การออม', en: 'savings' }
+            { th: 'การออม', en: 'savings' },
+            { th: 'การจัดการความมั่งคั่ง', en: 'wealth management' },
+            { th: 'การวางแผนทางการเงิน', en: 'financial planning' },
+            { th: 'การติดตามทรัพย์สิน', en: 'asset tracking' },
+            { th: 'การวิเคราะห์การลงทุน', en: 'investment analysis' },
+            { th: 'การตั้งเป้าหมาย', en: 'goal setting' },
+            { th: 'รายงาน', en: 'reports' },
+            { th: 'พอร์ตโฟลิโอ', en: 'portfolio' },
+            { th: 'หุ้น', en: 'stocks' },
+            { th: 'พันธบัตร', en: 'bonds' },
+            { th: 'กองทุน', en: 'funds' },
+            { th: 'อสังหาริมทรัพย์', en: 'real estate' },
+            { th: 'เงินออม', en: 'savings account' },
+            { th: 'เงินฝาก', en: 'deposits' },
+            { th: 'เงินกู้', en: 'loans' },
+            { th: 'บัตรเครดิต', en: 'credit card' },
+            { th: 'คะแนนเครดิต', en: 'credit score' },
+            { th: 'การชำระเงิน', en: 'payments' },
+            { th: 'ดอกเบี้ย', en: 'interest' },
+            { th: 'ภาษี', en: 'tax' },
+            { th: 'การเกษียณ', en: 'retirement' },
+            { th: 'การศึกษาของบุตร', en: 'education fund' },
+            { th: 'การประกัน', en: 'insurance' }
         ]
         
         popularKeywords.forEach(keyword => {
@@ -432,19 +458,43 @@ function SearchBar() {
             }
         })
         
-        return Array.from(suggestions).slice(0, 5) // Limit to 5 suggestions
+        return Array.from(suggestions).slice(0, 8)
     }
 
+    /**
+     * Get popular search examples when no search term
+     */
+    const getPopularSearches = () => {
+        const popularSearches = [
+            { th: 'การเงิน', en: 'finance' },
+            { th: 'การลงทุน', en: 'investment' },
+            { th: 'งบประมาณ', en: 'budget' },
+            { th: 'การจัดการความมั่งคั่ง', en: 'wealth management' },
+            { th: 'การวางแผนทางการเงิน', en: 'financial planning' },
+            { th: 'พอร์ตโฟลิโอ', en: 'portfolio' },
+            { th: 'การออม', en: 'savings' },
+            { th: 'เครดิต', en: 'credit' }
+        ]
+        
+        return popularSearches.slice(0, 6)
+    }
 
     const filteredCards = getFilteredCards()
 
     return (
-        <div className="w-full max-w-6xl">
-            {/* Language Toggle Button */}
-            <div className="flex justify-end mb-4">
+        <div className={`w-full max-w-6xl ${isDarkMode ? 'dark' : ''}`}>
+            {/* Language and Theme Toggle Buttons */}
+            <div className="flex justify-end gap-2 mb-4">
+                <button
+                    onClick={toggleTheme}
+                    className="flex items-center gap-2 px-3 py-1 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                >
+                    {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                    {isDarkMode ? 'Light' : 'Dark'}
+                </button>
                 <button
                     onClick={toggleLanguage}
-                    className="flex items-center gap-2 px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                    className="flex items-center gap-2 px-3 py-1 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                 >
                     <span className="text-sm">🌐</span>
                     {language === 'th' ? 'ไทย' : 'EN'}
@@ -457,23 +507,23 @@ function SearchBar() {
                     <input
                         ref={inputRef}
                         type="text"
-                        placeholder={language === 'th' ? "ค้นหาทรัพย์สิน สมาชิกครอบครัว..." : "Search for wealth items, family members..."}
+                        placeholder={language === 'th' ? "ลองค้นหา: การเงิน, การลงทุน, งบประมาณ, พอร์ตโฟลิโอ..." : "Try searching: finance, investment, budget, portfolio..."}
                         value={searchTerm}
                         onChange={(e) => handleSearchChange(e.target.value)}
                         onKeyDown={handleKeyDown}
                         onFocus={() => setShowSuggestions(true)}
                         onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                        className="w-full h-9 min-w-0 rounded-md border border-gray-200 bg-white px-3 py-1 text-base text-gray-900 shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-emerald-500 focus-visible:ring-emerald-500/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm placeholder:text-gray-400 selection:bg-emerald-500 selection:text-white"
+                        className="w-full h-9 min-w-0 rounded-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-1 text-base text-gray-900 dark:text-gray-100 shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-emerald-500 focus-visible:ring-emerald-500/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 selection:bg-emerald-500 selection:text-white"
                     />
                     
                     {/* Search Icon */}
-                    <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                    <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500 pointer-events-none" />
                     
                     {/* Clear Button */}
                     {searchTerm && (
                         <button
                             onClick={clearSearch}
-                            className="absolute right-8 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center transition-all duration-200 animate-in fade-in-0 zoom-in-95"
+                            className="absolute right-8 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-all duration-200 animate-in fade-in-0 zoom-in-95"
                         >
                             <X className="w-4 h-4" />
                         </button>
@@ -481,24 +531,57 @@ function SearchBar() {
                 </div>
 
                 {/* Search Suggestions Dropdown */}
-                {showSuggestions && searchTerm.length >= 2 && (() => {
-                    const suggestions = getSearchSuggestions()
-                    return suggestions.length > 0 && (
-                        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto">
+                {showSuggestions && (() => {
+                    const suggestions = searchTerm.length >= 2 ? getSearchSuggestions() : []
+                    const popularSearches = searchTerm.length < 2 ? getPopularSearches() : []
+                    
+                    return (suggestions.length > 0 || popularSearches.length > 0) && (
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 w-full max-w-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
                             <div className="py-2">
-                                {suggestions.map((suggestion, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => {
-                                            setSearchTerm(suggestion)
-                                            setShowSuggestions(false)
-                                            inputRef.current?.focus()
-                                        }}
-                                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                                    >
-                                        {highlightText(suggestion, searchTerm)}
-                                    </button>
-                                ))}
+                                {/* Show suggestions when typing */}
+                                {suggestions.length > 0 && (
+                                    <>
+                                        <div className="px-4 py-1 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                            {language === 'th' ? 'คำแนะนำ' : 'Suggestions'}
+                                        </div>
+                                        {suggestions.map((suggestion, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => {
+                                                    setSearchTerm(suggestion)
+                                                    setShowSuggestions(false)
+                                                    inputRef.current?.focus()
+                                                }}
+                                                className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                                            >
+                                                {highlightText(suggestion, searchTerm)}
+                                            </button>
+                                        ))}
+                                    </>
+                                )}
+                                
+                                {/* Show popular searches when not typing */}
+                                {popularSearches.length > 0 && searchTerm.length < 2 && (
+                                    <>
+                                        <div className="px-4 py-1 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                            {language === 'th' ? 'ค้นหาที่เป็นที่นิยม' : 'Popular Searches'}
+                                        </div>
+                                        {popularSearches.map((search, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => {
+                                                    setSearchTerm(search[language])
+                                                    setShowSuggestions(false)
+                                                    inputRef.current?.focus()
+                                                }}
+                                                className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+                                            >
+                                                <Search className="w-3 h-3 text-gray-400 dark:text-gray-500" />
+                                                {search[language]}
+                                            </button>
+                                        ))}
+                                    </>
+                                )}
                             </div>
                         </div>
                     )
@@ -514,7 +597,7 @@ function SearchBar() {
                                 className={`px-3 py-1 text-sm font-medium rounded-full transition-all duration-200 ${
                                     selectedCategory === category.id
                                         ? 'bg-emerald-500 text-white shadow-md'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                                 }`}
                     >
                         {category.name[language]}
@@ -526,13 +609,13 @@ function SearchBar() {
             {/* No Results State */}
             {debouncedSearchTerm && filteredCards.filter(card => card.hasMatch).length === 0 && (
                 <div className="text-center py-12">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                        <Search className="w-8 h-8 text-gray-400" />
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                        <Search className="w-8 h-8 text-gray-400 dark:text-gray-500" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
                         {language === 'th' ? 'ไม่พบผลลัพธ์' : 'No results found'}
                     </h3>
-                    <p className="text-gray-500 mb-4">
+                    <p className="text-gray-500 dark:text-gray-400 mb-4">
                         {language === 'th' 
                             ? 'ลองค้นหาคำอื่นหรือเปลี่ยนหมวดหมู่'
                             : 'Try different keywords or change category'
@@ -541,13 +624,13 @@ function SearchBar() {
                     <div className="flex flex-wrap justify-center gap-2">
                                 <button
                                     onClick={() => setSearchTerm('')}
-                                    className="px-4 py-2 text-sm font-medium text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors"
+                                    className="px-4 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 rounded-lg transition-colors"
                                 >
                                     {language === 'th' ? 'ล้างการค้นหา' : 'Clear search'}
                                 </button>
                         <button
                             onClick={() => setSelectedCategory('all')}
-                            className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                            className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                         >
                             {language === 'th' ? 'แสดงทั้งหมด' : 'Show all'}
                         </button>
@@ -558,9 +641,6 @@ function SearchBar() {
             {/* Financial Service Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredCards.map((card, index) => {
-                    const isFirstCard = index === 0 && card.hasMatch
-                    const isSecondCard = index === 1 && card.hasMatch
-                    const isThirdCard = index === 2 && card.hasMatch
                     
                     // Calculate opacity based on ranking (most accurate = highest opacity)
                     const getCardOpacity = () => {
@@ -602,7 +682,7 @@ function SearchBar() {
                             key={card.id}
                             onClick={() => handleCardClick(card)}
                             onMouseEnter={() => setFocusedCardIndex(index)}
-                            className={`relative border rounded-lg p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] min-h-[200px] flex flex-col group ${getCardOpacity()} ${getBorderColor()} ${getBackgroundColor()} hover:opacity-100 ${
+                            className={`relative border rounded-lg p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] min-h-[200px] flex flex-col group ${getCardOpacity()} ${getBorderColor()} ${getBackgroundColor()} hover:opacity-100 dark:bg-gray-800 dark:border-gray-700 ${
                                 isFocused ? 'ring-2 ring-blue-500 ring-opacity-50' : ''
                             }`}
                             tabIndex={0}
@@ -615,8 +695,8 @@ function SearchBar() {
                                 }}
                                 className={`absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 ${
                                     favorites.has(card.id)
-                                        ? 'text-red-500 bg-red-50 hover:bg-red-100'
-                                        : 'text-gray-400 hover:text-red-500 hover:bg-red-50'
+                                        ? 'text-red-500 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30'
+                                        : 'text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'
                                 }`}
                             >
                                 <svg className="w-4 h-4" fill={favorites.has(card.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
@@ -642,26 +722,26 @@ function SearchBar() {
                             
                             {/* Card Name */}
                                     <h3 className={`font-semibold text-center text-base mb-3 ${
-                                        !debouncedSearchTerm ? 'text-gray-900' :
-                                        !card.hasMatch ? 'text-gray-700' :
-                                        index === 0 ? 'text-emerald-900' : // Most accurate - darkest emerald
-                                        index === 1 ? 'text-emerald-800' : // Second - dark emerald
-                                        index === 2 ? 'text-emerald-700' : // Third - medium emerald
-                                        index < 5 ? 'text-emerald-600' : // Top 5 - light emerald
-                                        'text-emerald-500' // Others - lighter emerald
+                                        !debouncedSearchTerm ? 'text-gray-900 dark:text-gray-100' :
+                                        !card.hasMatch ? 'text-gray-700 dark:text-gray-300' :
+                                        index === 0 ? 'text-emerald-900 dark:text-emerald-400' : // Most accurate - darkest emerald
+                                        index === 1 ? 'text-emerald-800 dark:text-emerald-400' : // Second - dark emerald
+                                        index === 2 ? 'text-emerald-700 dark:text-emerald-400' : // Third - medium emerald
+                                        index < 5 ? 'text-emerald-600 dark:text-emerald-400' : // Top 5 - light emerald
+                                        'text-emerald-500 dark:text-emerald-400' // Others - lighter emerald
                                     }`}>
                                 {highlightText(card.name[language], searchTerm)}
                             </h3>
                             
                             {/* Card Description */}
                                     <p className={`text-sm text-center leading-relaxed mb-4 flex-grow ${
-                                        !debouncedSearchTerm ? 'text-gray-600' :
-                                        !card.hasMatch ? 'text-gray-600' :
-                                        index === 0 ? 'text-emerald-800' : // Most accurate - dark emerald
-                                        index === 1 ? 'text-emerald-700' : // Second - medium emerald
-                                        index === 2 ? 'text-emerald-600' : // Third - light emerald
-                                        index < 5 ? 'text-emerald-500' : // Top 5 - lighter emerald
-                                        'text-emerald-400' // Others - lightest emerald
+                                        !debouncedSearchTerm ? 'text-gray-600 dark:text-gray-400' :
+                                        !card.hasMatch ? 'text-gray-600 dark:text-gray-400' :
+                                        index === 0 ? 'text-emerald-800 dark:text-emerald-300' : // Most accurate - dark emerald
+                                        index === 1 ? 'text-emerald-700 dark:text-emerald-300' : // Second - medium emerald
+                                        index === 2 ? 'text-emerald-600 dark:text-emerald-300' : // Third - light emerald
+                                        index < 5 ? 'text-emerald-500 dark:text-emerald-300' : // Top 5 - lighter emerald
+                                        'text-emerald-400 dark:text-emerald-300' // Others - lightest emerald
                                     }`}>
                                 {highlightText(card.description[language], searchTerm)}
                             </p>
@@ -670,11 +750,11 @@ function SearchBar() {
                             {card.hasMatch && (
                                 <div className="mt-auto text-center">
                                             <span className={`text-xs px-2 py-1 rounded ${
-                                                index === 0 ? 'text-emerald-800 bg-emerald-200' : // Most accurate - dark emerald
-                                                index === 1 ? 'text-emerald-700 bg-emerald-100' : // Second - medium emerald
-                                                index === 2 ? 'text-emerald-600 bg-emerald-50' : // Third - light emerald
-                                                index < 5 ? 'text-emerald-500 bg-emerald-50' : // Top 5 - lighter emerald
-                                                'text-emerald-400 bg-emerald-25' // Others - lightest emerald
+                                                index === 0 ? 'text-emerald-800 dark:text-emerald-200 bg-emerald-200 dark:bg-emerald-800/30' : // Most accurate - dark emerald
+                                                index === 1 ? 'text-emerald-700 dark:text-emerald-200 bg-emerald-100 dark:bg-emerald-800/20' : // Second - medium emerald
+                                                index === 2 ? 'text-emerald-600 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-800/20' : // Third - light emerald
+                                                index < 5 ? 'text-emerald-500 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-800/20' : // Top 5 - lighter emerald
+                                                'text-emerald-400 dark:text-emerald-200 bg-emerald-25 dark:bg-emerald-800/10' // Others - lightest emerald
                                             }`}>
                                         {card.category.charAt(0).toUpperCase() + card.category.slice(1)}
                                     </span>
@@ -685,15 +765,6 @@ function SearchBar() {
                 })}
             </div>
 
-            {/* Subtle Instructions */}
-            <div className="mt-6 text-center">
-                <p className="text-xs text-gray-400">
-                    {language === 'th' 
-                        ? 'ลองค้นหา: การเงิน, งบประมาณ, การลงทุน, เครดิต, การออม'
-                        : 'Try searching for: finance, budget, investment, credit, savings'
-                    }
-                </p>
-            </div>
         </div>
     )
 }
