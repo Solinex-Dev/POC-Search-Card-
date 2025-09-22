@@ -1,4 +1,4 @@
-import { Search, X, DollarSign, TrendingUp, PieChart, Building, BarChart3, Target, Moon, Sun } from 'lucide-react'
+import { Search, X, DollarSign, TrendingUp, PieChart, Building, BarChart3, Target, Moon, Sun, CreditCard, PiggyBank, Calculator, Shield, FileText, Users, Home, Car, GraduationCap, Briefcase, Heart, Star, Clock, AlertCircle } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 
 /**
@@ -180,6 +180,269 @@ function SearchBar() {
                 th: "สร้างรายงานทางการเงินที่ละเอียด",
                 en: "Create detailed financial reports"
             }
+        },
+        { 
+            id: 7, 
+            name: {
+                th: "การจัดการบัตรเครดิต",
+                en: "Credit Card Management"
+            },
+            icon: <CreditCard className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "credit card", "credit", "card management", "credit management", "payment", "billing", "statement",
+                "balance", "limit", "interest", "apr", "annual fee", "rewards", "cashback", "points", "miles",
+                "credit score", "credit history", "credit report", "debt", "debt management", "payoff", "minimum payment",
+                "due date", "late fee", "over limit", "credit utilization", "credit monitoring", "fraud protection",
+                "card security", "pin", "cvv", "expiry", "replacement", "lost card", "stolen card", "dispute",
+                // Thai keywords
+                "บัตรเครดิต", "เครดิต", "การจัดการบัตร", "การจัดการเครดิต", "การชำระเงิน", "การเรียกเก็บเงิน", "ใบแจ้งยอด",
+                "ยอดคงเหลือ", "วงเงิน", "ดอกเบี้ย", "อัตราดอกเบี้ย", "ค่าธรรมเนียมรายปี", "รางวัล", "เงินคืน", "คะแนน", "ไมล์",
+                "คะแนนเครดิต", "ประวัติเครดิต", "รายงานเครดิต", "หนี้", "การจัดการหนี้", "การชำระหนี้", "การชำระขั้นต่ำ",
+                "วันครบกำหนด", "ค่าปรับล่าช้า", "เกินวงเงิน", "การใช้เครดิต", "การตรวจสอบเครดิต", "การป้องกันการฉ้อโกง",
+                "ความปลอดภัยบัตร", "รหัสผ่าน", "รหัสความปลอดภัย", "วันหมดอายุ", "การเปลี่ยน", "บัตรหาย", "บัตรถูกขโมย", "การโต้แย้ง"
+            ], 
+            category: "credit", 
+            description: {
+                th: "จัดการบัตรเครดิตและหนี้สินอย่างมีประสิทธิภาพ",
+                en: "Manage credit cards and debt efficiently"
+            }
+        },
+        { 
+            id: 8, 
+            name: {
+                th: "การออมเงิน",
+                en: "Savings Management"
+            },
+            icon: <PiggyBank className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "savings", "savings account", "deposit", "deposits", "saving money", "emergency fund", "rainy day fund",
+                "high yield", "interest rate", "compound interest", "savings goal", "automatic savings", "direct deposit",
+                "money market", "certificate of deposit", "cd", "savings bond", "treasury bond", "government bond",
+                "retirement savings", "401k", "ira", "roth ira", "pension", "annuity", "social security",
+                "savings plan", "budget", "expense tracking", "spending", "frugal", "thrifty", "money management",
+                // Thai keywords
+                "การออม", "บัญชีออมทรัพย์", "เงินฝาก", "การฝากเงิน", "การออมเงิน", "กองทุนฉุกเฉิน", "กองทุนสำรอง",
+                "ผลตอบแทนสูง", "อัตราดอกเบี้ย", "ดอกเบี้ยทบต้น", "เป้าหมายการออม", "การออมอัตโนมัติ", "การโอนเงินโดยตรง",
+                "ตลาดเงิน", "ใบรับรองเงินฝาก", "พันธบัตรออมทรัพย์", "พันธบัตรรัฐบาล", "การออมเพื่อการเกษียณ", "กองทุนสำรองเลี้ยงชีพ",
+                "แผนการออม", "งบประมาณ", "การติดตามรายจ่าย", "การใช้จ่าย", "ประหยัด", "การจัดการเงิน"
+            ], 
+            category: "savings", 
+            description: {
+                th: "วางแผนและจัดการการออมเงินอย่างเป็นระบบ",
+                en: "Plan and manage savings systematically"
+            }
+        },
+        { 
+            id: 9, 
+            name: {
+                th: "เครื่องคิดเลขทางการเงิน",
+                en: "Financial Calculator"
+            },
+            icon: <Calculator className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "calculator", "financial calculator", "loan calculator", "mortgage calculator", "investment calculator",
+                "retirement calculator", "savings calculator", "compound interest calculator", "budget calculator",
+                "debt payoff calculator", "credit card calculator", "tax calculator", "insurance calculator",
+                "roi calculator", "npv calculator", "irr calculator", "present value", "future value", "annuity",
+                "amortization", "payment schedule", "interest calculation", "principal", "rate", "time", "formula",
+                // Thai keywords
+                "เครื่องคิดเลข", "เครื่องคิดเลขทางการเงิน", "เครื่องคิดเลขเงินกู้", "เครื่องคิดเลขจำนอง", "เครื่องคิดเลขการลงทุน",
+                "เครื่องคิดเลขการเกษียณ", "เครื่องคิดเลขการออม", "เครื่องคิดเลขดอกเบี้ยทบต้น", "เครื่องคิดเลขงบประมาณ",
+                "เครื่องคิดเลขการชำระหนี้", "เครื่องคิดเลขบัตรเครดิต", "เครื่องคิดเลขภาษี", "เครื่องคิดเลขประกัน",
+                "เครื่องคิดเลขผลตอบแทน", "เครื่องคิดเลขมูลค่าปัจจุบัน", "เครื่องคิดเลขมูลค่าในอนาคต", "เงินรายปี",
+                "การคำนวณการชำระคืน", "ตารางการชำระ", "การคำนวณดอกเบี้ย", "เงินต้น", "อัตรา", "เวลา", "สูตร"
+            ], 
+            category: "finance", 
+            description: {
+                th: "คำนวณและวิเคราะห์สถานการณ์ทางการเงิน",
+                en: "Calculate and analyze financial situations"
+            }
+        },
+        { 
+            id: 10, 
+            name: {
+                th: "การประกันภัย",
+                en: "Insurance Management"
+            },
+            icon: <Shield className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "insurance", "insurance management", "life insurance", "health insurance", "auto insurance", "home insurance",
+                "property insurance", "disability insurance", "long term care", "annuity", "premium", "deductible",
+                "coverage", "policy", "claim", "beneficiary", "term life", "whole life", "universal life",
+                "medicare", "medicaid", "cobra", "hsa", "fsa", "insurance agent", "broker", "underwriter",
+                "risk assessment", "actuarial", "actuary", "mortality", "morbidity", "insurance company", "carrier",
+                // Thai keywords
+                "ประกันภัย", "การจัดการประกัน", "ประกันชีวิต", "ประกันสุขภาพ", "ประกันรถยนต์", "ประกันบ้าน",
+                "ประกันทรัพย์สิน", "ประกันทุพพลภาพ", "การดูแลระยะยาว", "เงินรายปี", "เบี้ยประกัน", "ค่าลดหย่อน",
+                "ความคุ้มครอง", "กรมธรรม์", "การเรียกร้อง", "ผู้รับผลประโยชน์", "ประกันชีวิตระยะสั้น", "ประกันชีวิตตลอดชีพ",
+                "ประกันชีวิตแบบยืดหยุ่น", "ประกันสังคม", "การประเมินความเสี่ยง", "นักคณิตศาสตร์ประกันภัย", "บริษัทประกัน"
+            ], 
+            category: "finance", 
+            description: {
+                th: "จัดการและติดตามการประกันภัยครอบครัว",
+                en: "Manage and track family insurance coverage"
+            }
+        },
+        { 
+            id: 11, 
+            name: {
+                th: "การจัดการภาษี",
+                en: "Tax Management"
+            },
+            icon: <FileText className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "tax", "tax management", "tax planning", "tax preparation", "tax filing", "income tax", "property tax",
+                "sales tax", "capital gains", "tax deduction", "tax credit", "tax refund", "tax bracket", "marginal tax",
+                "effective tax rate", "tax advisor", "cpa", "accountant", "tax software", "turbo tax", "h&r block",
+                "w2", "1099", "schedule a", "schedule b", "schedule c", "itemized deduction", "standard deduction",
+                "exemption", "dependent", "filing status", "single", "married", "head of household", "widow",
+                // Thai keywords
+                "ภาษี", "การจัดการภาษี", "การวางแผนภาษี", "การเตรียมภาษี", "การยื่นภาษี", "ภาษีเงินได้", "ภาษีทรัพย์สิน",
+                "ภาษีมูลค่าเพิ่ม", "กำไรจากการขาย", "การลดหย่อนภาษี", "เครดิตภาษี", "เงินคืนภาษี", "ช่วงภาษี", "ภาษีส่วนเพิ่ม",
+                "อัตราภาษีที่แท้จริง", "ที่ปรึกษาภาษี", "นักบัญชี", "ซอฟต์แวร์ภาษี", "การลดหย่อนรายการ", "การลดหย่อนมาตรฐาน",
+                "การยกเว้น", "ผู้อยู่ในอุปการะ", "สถานะการยื่น", "โสด", "สมรส", "หัวหน้าครอบครัว", "หม้าย"
+            ], 
+            category: "finance", 
+            description: {
+                th: "วางแผนและจัดการภาษีอย่างถูกต้อง",
+                en: "Plan and manage taxes correctly"
+            }
+        },
+        { 
+            id: 12, 
+            name: {
+                th: "การวางแผนครอบครัว",
+                en: "Family Planning"
+            },
+            icon: <Users className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "family planning", "family financial planning", "household budget", "family budget", "children", "kids",
+                "education fund", "college fund", "529 plan", "education savings", "childcare", "daycare", "nanny",
+                "family expenses", "household expenses", "family income", "dual income", "single parent", "stay at home",
+                "family goals", "family values", "inheritance", "estate planning", "will", "trust", "power of attorney",
+                "guardianship", "family meeting", "financial education", "teaching kids", "allowance", "chores",
+                // Thai keywords
+                "การวางแผนครอบครัว", "การวางแผนทางการเงินครอบครัว", "งบประมาณครอบครัว", "งบประมาณบ้าน", "ลูก", "เด็ก",
+                "กองทุนการศึกษา", "การออมเพื่อการศึกษา", "ค่าเลี้ยงดู", "พี่เลี้ยง", "ค่าใช้จ่ายครอบครัว", "รายได้ครอบครัว",
+                "รายได้คู่", "พ่อแม่เลี้ยงเดี่ยว", "อยู่บ้าน", "เป้าหมายครอบครัว", "ค่านิยมครอบครัว", "มรดก", "การวางแผนมรดก",
+                "พินัยกรรม", "ทรัสต์", "หนังสือมอบอำนาจ", "การปกครอง", "การประชุมครอบครัว", "การเงินศึกษา", "การสอนเด็ก", "เงินค่าขนม", "งานบ้าน"
+            ], 
+            category: "finance", 
+            description: {
+                th: "วางแผนทางการเงินสำหรับครอบครัวและอนาคต",
+                en: "Plan finances for family and future"
+            }
+        },
+        { 
+            id: 13, 
+            name: {
+                th: "การซื้อบ้าน",
+                en: "Home Buying"
+            },
+            icon: <Home className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "home buying", "real estate", "house hunting", "mortgage", "home loan", "down payment", "closing costs",
+                "property value", "appraisal", "inspection", "home inspection", "title search", "escrow", "closing",
+                "real estate agent", "realtor", "broker", "listing", "mls", "open house", "showing", "offer",
+                "counter offer", "negotiation", "contract", "purchase agreement", "contingency", "financing contingency",
+                "home warranty", "property tax", "homeowners insurance", "hoa", "homeowners association", "maintenance",
+                // Thai keywords
+                "การซื้อบ้าน", "อสังหาริมทรัพย์", "การหาบ้าน", "จำนอง", "เงินกู้บ้าน", "เงินดาวน์", "ค่าธรรมเนียมปิด",
+                "มูลค่าทรัพย์สิน", "การประเมิน", "การตรวจสอบ", "การตรวจสอบบ้าน", "การค้นหาสิทธิ์", "การฝากเงิน", "การปิด",
+                "นายหน้าอสังหาริมทรัพย์", "รายการขาย", "บ้านเปิด", "การแสดง", "ข้อเสนอ", "การต่อรอง", "สัญญา", "ข้อตกลงซื้อ",
+                "การรับประกันบ้าน", "ภาษีทรัพย์สิน", "ประกันบ้าน", "สมาคมเจ้าของบ้าน", "การบำรุงรักษา"
+            ], 
+            category: "investment", 
+            description: {
+                th: "วางแผนและจัดการการซื้อบ้าน",
+                en: "Plan and manage home buying process"
+            }
+        },
+        { 
+            id: 14, 
+            name: {
+                th: "การซื้อรถ",
+                en: "Car Buying"
+            },
+            icon: <Car className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "car buying", "auto purchase", "vehicle", "car loan", "auto loan", "financing", "lease", "leasing",
+                "down payment", "monthly payment", "interest rate", "apr", "credit score", "pre approval", "trade in",
+                "depreciation", "car value", "kbb", "kelley blue book", "nada", "car insurance", "auto insurance",
+                "registration", "title", "dmv", "emissions", "inspection", "warranty", "extended warranty", "maintenance",
+                "car dealer", "dealership", "private sale", "certified pre owned", "cpo", "new car", "used car",
+                // Thai keywords
+                "การซื้อรถ", "การซื้อรถยนต์", "ยานพาหนะ", "เงินกู้อรถ", "การเงิน", "การเช่า", "เงินดาวน์", "การชำระรายเดือน",
+                "อัตราดอกเบี้ย", "คะแนนเครดิต", "การอนุมัติล่วงหน้า", "การแลก", "การเสื่อมค่า", "มูลค่ารถ", "ประกันรถยนต์",
+                "การขึ้นทะเบียน", "ใบรับรอง", "การตรวจสอบ", "การรับประกัน", "การบำรุงรักษา", "ตัวแทนจำหน่ายรถ", "การขายส่วนตัว",
+                "รถมือสองรับประกัน", "รถใหม่", "รถมือสอง"
+            ], 
+            category: "finance", 
+            description: {
+                th: "วางแผนการซื้อรถและจัดการค่าใช้จ่าย",
+                en: "Plan car purchase and manage expenses"
+            }
+        },
+        { 
+            id: 15, 
+            name: {
+                th: "กองทุนการศึกษา",
+                en: "Education Fund"
+            },
+            icon: <GraduationCap className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "education fund", "college fund", "529 plan", "education savings", "tuition", "college tuition",
+                "university", "higher education", "student loan", "fafsa", "financial aid", "scholarship", "grant",
+                "pell grant", "work study", "student debt", "loan forgiveness", "public service loan forgiveness",
+                "income driven repayment", "deferment", "forbearance", "cosigner", "parent plus loan", "private loan",
+                "education planning", "college planning", "university planning", "career planning", "major selection",
+                // Thai keywords
+                "กองทุนการศึกษา", "กองทุนมหาวิทยาลัย", "การออมเพื่อการศึกษา", "ค่าเล่าเรียน", "ค่าเล่าเรียนมหาวิทยาลัย",
+                "มหาวิทยาลัย", "การศึกษาระดับสูง", "เงินกู้นักเรียน", "ความช่วยเหลือทางการเงิน", "ทุนการศึกษา", "เงินช่วยเหลือ",
+                "ทุนเพลล์", "งานเรียน", "หนี้นักเรียน", "การยกเลิกหนี้", "การชำระหนี้ตามรายได้", "การเลื่อนการชำระ",
+                "การผ่อนผัน", "ผู้ค้ำประกัน", "เงินกู้ผู้ปกครอง", "เงินกู้ส่วนตัว", "การวางแผนการศึกษา", "การวางแผนมหาวิทยาลัย",
+                "การวางแผนอาชีพ", "การเลือกสาขา"
+            ], 
+            category: "savings", 
+            description: {
+                th: "วางแผนและออมเงินเพื่อการศึกษาของบุตร",
+                en: "Plan and save for children's education"
+            }
+        },
+        { 
+            id: 16, 
+            name: {
+                th: "การวางแผนอาชีพ",
+                en: "Career Planning"
+            },
+            icon: <Briefcase className="w-12 h-12" />,
+            keywords: [
+                // English keywords
+                "career planning", "career development", "job search", "resume", "cv", "cover letter", "interview",
+                "networking", "professional development", "skills", "training", "certification", "degree", "education",
+                "salary negotiation", "benefits", "retirement planning", "pension", "401k", "employer match",
+                "career change", "job transition", "freelancing", "consulting", "entrepreneurship", "business",
+                "side hustle", "passive income", "multiple income streams", "work life balance", "remote work",
+                // Thai keywords
+                "การวางแผนอาชีพ", "การพัฒนาอาชีพ", "การหางาน", "เรซูเม่", "จดหมายสมัครงาน", "การสัมภาษณ์", "การสร้างเครือข่าย",
+                "การพัฒนาวิชาชีพ", "ทักษะ", "การฝึกอบรม", "ใบรับรอง", "ปริญญา", "การศึกษา", "การต่อรองเงินเดือน", "สวัสดิการ",
+                "การวางแผนการเกษียณ", "กองทุนสำรองเลี้ยงชีพ", "การเปลี่ยนอาชีพ", "การเปลี่ยนงาน", "การทำงานอิสระ", "การให้คำปรึกษา",
+                "การเป็นผู้ประกอบการ", "ธุรกิจ", "งานเสริม", "รายได้แบบพาสซีฟ", "รายได้หลายทาง", "สมดุลงานชีวิต", "การทำงานทางไกล"
+            ], 
+            category: "finance", 
+            description: {
+                th: "วางแผนอาชีพและพัฒนาทักษะทางการเงิน",
+                en: "Plan career and develop financial skills"
+            }
         }
     ]
 
@@ -211,38 +474,99 @@ function SearchBar() {
         }
     }, [isDarkMode])
 
-    // Get unique categories with search keywords
+    // Get unique categories with comprehensive search keywords
     const categories = [
         { 
             id: 'all', 
             name: { th: 'ทั้งหมด', en: 'All' },
-            keywords: ['all', 'ทั้งหมด', 'everything', 'ทุกอย่าง']
+            keywords: ['all', 'ทั้งหมด', 'everything', 'ทุกอย่าง', 'complete', 'ทั้งหมด', 'comprehensive', 'ครบถ้วน'],
+            color: 'gray'
         },
         { 
             id: 'finance', 
             name: { th: 'การเงิน', en: 'Finance' },
-            keywords: ['finance', 'การเงิน', 'money', 'budget', 'expense', 'financial']
+            keywords: [
+                'finance', 'financial', 'การเงิน', 'money', 'budget', 'expense', 'income', 'revenue', 'profit', 'loss',
+                'cash flow', 'liquidity', 'solvency', 'leverage', 'equity', 'debt', 'capital', 'funds', 'assets',
+                'liabilities', 'balance sheet', 'income statement', 'cash flow statement', 'financial planning',
+                'financial management', 'accounting', 'bookkeeping', 'auditing', 'compliance', 'reporting',
+                'analysis', 'valuation', 'appraisal', 'assessment', 'evaluation', 'review', 'audit'
+            ],
+            color: 'blue'
         },
         { 
             id: 'investment', 
             name: { th: 'การลงทุน', en: 'Investment' },
-            keywords: ['investment', 'การลงทุน', 'invest', 'portfolio', 'stocks', 'trading']
+            keywords: [
+                'investment', 'investing', 'การลงทุน', 'invest', 'portfolio', 'stocks', 'trading', 'securities',
+                'bonds', 'mutual funds', 'etf', 'index funds', 'hedge funds', 'private equity', 'venture capital',
+                'real estate', 'property', 'commodities', 'gold', 'silver', 'oil', 'crypto', 'cryptocurrency',
+                'bitcoin', 'ethereum', 'blockchain', 'diversification', 'asset allocation', 'rebalancing',
+                'risk management', 'volatility', 'returns', 'yield', 'dividend', 'capital gains', 'roi', 'irr'
+            ],
+            color: 'green'
         },
         { 
             id: 'credit', 
             name: { th: 'เครดิต', en: 'Credit' },
-            keywords: ['credit', 'เครดิต', 'debt', 'payment', 'score', 'card']
+            keywords: [
+                'credit', 'เครดิต', 'debt', 'payment', 'score', 'card', 'loan', 'borrowing', 'lending',
+                'interest', 'apr', 'principal', 'collateral', 'guarantee', 'cosigner', 'credit history',
+                'credit report', 'credit monitoring', 'credit repair', 'debt consolidation', 'debt settlement',
+                'bankruptcy', 'foreclosure', 'repossession', 'default', 'delinquency', 'collections',
+                'credit utilization', 'credit limit', 'available credit', 'minimum payment', 'due date'
+            ],
+            color: 'purple'
         },
         { 
             id: 'savings', 
             name: { th: 'การออม', en: 'Savings' },
-            keywords: ['savings', 'การออม', 'save', 'goals', 'money', 'store']
+            keywords: [
+                'savings', 'การออม', 'save', 'goals', 'money', 'store', 'deposit', 'account', 'bank',
+                'emergency fund', 'rainy day', 'reserve', 'nest egg', 'retirement', 'pension', '401k', 'ira',
+                'roth ira', 'annuity', 'social security', 'compound interest', 'high yield', 'cd', 'certificate',
+                'money market', 'treasury', 'government bond', 'savings bond', 'automatic savings', 'direct deposit'
+            ],
+            color: 'emerald'
+        },
+        { 
+            id: 'insurance', 
+            name: { th: 'ประกันภัย', en: 'Insurance' },
+            keywords: [
+                'insurance', 'ประกันภัย', 'coverage', 'policy', 'premium', 'deductible', 'claim', 'beneficiary',
+                'life insurance', 'health insurance', 'auto insurance', 'home insurance', 'property insurance',
+                'disability insurance', 'long term care', 'medicare', 'medicaid', 'cobra', 'hsa', 'fsa',
+                'term life', 'whole life', 'universal life', 'annuity', 'risk assessment', 'actuarial'
+            ],
+            color: 'red'
+        },
+        { 
+            id: 'tax', 
+            name: { th: 'ภาษี', en: 'Tax' },
+            keywords: [
+                'tax', 'ภาษี', 'taxation', 'income tax', 'property tax', 'sales tax', 'capital gains',
+                'tax deduction', 'tax credit', 'tax refund', 'tax bracket', 'marginal tax', 'effective tax rate',
+                'tax planning', 'tax preparation', 'tax filing', 'w2', '1099', 'schedule a', 'schedule b',
+                'itemized deduction', 'standard deduction', 'exemption', 'dependent', 'filing status'
+            ],
+            color: 'yellow'
+        },
+        { 
+            id: 'retirement', 
+            name: { th: 'การเกษียณ', en: 'Retirement' },
+            keywords: [
+                'retirement', 'การเกษียณ', 'pension', '401k', 'ira', 'roth ira', 'social security',
+                'annuity', 'retirement planning', 'retirement savings', 'retirement income', 'withdrawal',
+                'required minimum distribution', 'rmd', 'early retirement', 'retirement age', 'benefits',
+                'retirement calculator', 'retirement goals', 'retirement lifestyle', 'retirement budget'
+            ],
+            color: 'orange'
         }
     ]
 
     
     /**
-     * Enhanced fuzzy search algorithm with better matching
+     * Enhanced fuzzy search algorithm with comprehensive matching
      */
     const fuzzyMatch = (str, pattern) => {
         const strLower = str.toLowerCase().trim()
@@ -256,15 +580,18 @@ function SearchBar() {
         // Starts with gets very high score
         if (strLower.startsWith(patternLower)) return { score: 95, matched: true }
         
+        // Ends with gets high score
+        if (strLower.endsWith(patternLower)) return { score: 90, matched: true }
+        
         // Contains gets high score
         if (strLower.includes(patternLower)) return { score: 85, matched: true }
         
         // Word boundary matching (matches whole words)
         const words = strLower.split(/\s+/)
         for (const word of words) {
-            if (word === patternLower) return { score: 90, matched: true }
-            if (word.startsWith(patternLower)) return { score: 80, matched: true }
-            if (word.includes(patternLower)) return { score: 70, matched: true }
+            if (word === patternLower) return { score: 92, matched: true }
+            if (word.startsWith(patternLower)) return { score: 88, matched: true }
+            if (word.includes(patternLower)) return { score: 82, matched: true }
         }
         
         // Enhanced fuzzy matching for partial matches
@@ -272,22 +599,30 @@ function SearchBar() {
         let consecutive = 0
         let maxConsecutive = 0
         let totalMatches = 0
-        let wordMatches = 0
+        let exactWordMatches = 0
+        let startsWithMatches = 0
+        let containsMatches = 0
+        let partialMatches = 0
         
-        // Check for word-level matches
+        // Check for comprehensive word-level matches
         const patternWords = patternLower.split(/\s+/)
         const strWords = strLower.split(/\s+/)
         
         for (const pWord of patternWords) {
             for (const sWord of strWords) {
-                if (sWord.includes(pWord)) {
-                    wordMatches++
-                    break
+                if (sWord === pWord) {
+                    exactWordMatches++
+                } else if (sWord.startsWith(pWord)) {
+                    startsWithMatches++
+                } else if (sWord.includes(pWord)) {
+                    containsMatches++
+                } else if (pWord.length > 2 && sWord.includes(pWord.substring(0, Math.max(2, pWord.length - 1)))) {
+                    partialMatches++
                 }
             }
         }
         
-        // Character-level fuzzy matching
+        // Character-level fuzzy matching with improved algorithm
         for (let i = 0; i < strLower.length && patternIdx < patternLower.length; i++) {
             if (strLower[i] === patternLower[patternIdx]) {
                 patternIdx++
@@ -299,17 +634,35 @@ function SearchBar() {
             }
         }
         
+        // Calculate comprehensive scoring
         if (patternIdx === patternLower.length) {
-            const completeness = (patternIdx / patternLower.length) * 40
+            const completeness = (patternIdx / patternLower.length) * 35
             const consecutiveness = (maxConsecutive / patternLower.length) * 25
             const density = (totalMatches / strLower.length) * 15
-            const wordScore = (wordMatches / patternWords.length) * 20
-            return { score: completeness + consecutiveness + density + wordScore, matched: true }
+            const wordScore = (
+                exactWordMatches * 8 +
+                startsWithMatches * 6 +
+                containsMatches * 4 +
+                partialMatches * 2
+            )
+            const position = patternIdx > 0 ? (strLower.indexOf(patternLower[0]) + 1) / strLower.length : 0
+            const positionBonus = position * 5
+            
+            return { 
+                score: Math.min(completeness + consecutiveness + density + wordScore + positionBonus, 100), 
+                matched: true 
+            }
         }
         
-        // If we have word matches, still consider it a match
-        if (wordMatches > 0) {
-            return { score: (wordMatches / patternWords.length) * 60, matched: true }
+        // If we have word matches, still consider it a match with enhanced scoring
+        if (exactWordMatches > 0 || startsWithMatches > 0 || containsMatches > 0) {
+            const wordScore = (
+                exactWordMatches * 20 +
+                startsWithMatches * 15 +
+                containsMatches * 10 +
+                partialMatches * 5
+            )
+            return { score: Math.min(wordScore, 100), matched: true }
         }
         
         return { score: 0, matched: false }
@@ -338,7 +691,7 @@ function SearchBar() {
             const nameMatch = fuzzyMatch(card.name[language], debouncedSearchTerm)
             if (nameMatch.matched) {
                 bestScore = Math.max(bestScore, nameMatch.score)
-                totalScore += nameMatch.score * 5 // Much higher weight for name matches
+                totalScore += nameMatch.score * 8 // Much higher weight for name matches
             }
             
             // Also check the other language name for better matching
@@ -346,7 +699,7 @@ function SearchBar() {
             const otherNameMatch = fuzzyMatch(card.name[otherLanguage], debouncedSearchTerm)
             if (otherNameMatch.matched) {
                 bestScore = Math.max(bestScore, otherNameMatch.score)
-                totalScore += otherNameMatch.score * 4 // High weight for other language name matches
+                totalScore += otherNameMatch.score * 6 // High weight for other language name matches
             }
             
             // Check category match (weighted high)
@@ -539,15 +892,25 @@ function SearchBar() {
         
         // Enhanced popular keywords with comprehensive examples
         const popularKeywords = [
-            // Card names (exact matches)
+            // Card names (exact matches) - All 16 cards
             { th: 'การจัดการความมั่งคั่ง', en: 'Wealth Management' },
             { th: 'การวางแผนทางการเงิน', en: 'Financial Planning' },
             { th: 'การติดตามทรัพย์สิน', en: 'Asset Tracking' },
             { th: 'การวิเคราะห์การลงทุน', en: 'Investment Analysis' },
             { th: 'การตั้งเป้าหมาย', en: 'Goal Setting' },
             { th: 'รายงานและการวิเคราะห์', en: 'Reports and Analysis' },
+            { th: 'การจัดการบัตรเครดิต', en: 'Credit Card Management' },
+            { th: 'การออมเงิน', en: 'Savings Management' },
+            { th: 'เครื่องคิดเลขทางการเงิน', en: 'Financial Calculator' },
+            { th: 'การประกันภัย', en: 'Insurance Management' },
+            { th: 'การจัดการภาษี', en: 'Tax Management' },
+            { th: 'การวางแผนครอบครัว', en: 'Family Planning' },
+            { th: 'การซื้อบ้าน', en: 'Home Buying' },
+            { th: 'การซื้อรถ', en: 'Car Buying' },
+            { th: 'กองทุนการศึกษา', en: 'Education Fund' },
+            { th: 'การวางแผนอาชีพ', en: 'Career Planning' },
             
-            // Financial terms
+            // Core Financial Terms
             { th: 'การเงิน', en: 'finance' },
             { th: 'การลงทุน', en: 'investment' },
             { th: 'งบประมาณ', en: 'budget' },
@@ -570,7 +933,7 @@ function SearchBar() {
             { th: 'การศึกษาของบุตร', en: 'education fund' },
             { th: 'การประกัน', en: 'insurance' },
             
-            // Additional comprehensive terms
+            // Advanced Financial Terms
             { th: 'การจัดการ', en: 'management' },
             { th: 'การวางแผน', en: 'planning' },
             { th: 'การติดตาม', en: 'tracking' },
@@ -603,7 +966,111 @@ function SearchBar() {
             { th: 'การวิเคราะห์ข้อมูล', en: 'data analysis' },
             { th: 'การรายงาน', en: 'reporting' },
             { th: 'การจัดทำเอกสาร', en: 'documentation' },
-            { th: 'การเก็บบันทึก', en: 'record keeping' }
+            { th: 'การเก็บบันทึก', en: 'record keeping' },
+            
+            // Specific Financial Products
+            { th: 'กองทุนรวม', en: 'mutual funds' },
+            { th: 'กองทุน etf', en: 'etf' },
+            { th: 'กองทุนดัชนี', en: 'index funds' },
+            { th: 'กองทุนป้องกันความเสี่ยง', en: 'hedge funds' },
+            { th: 'เงินทุนเอกชน', en: 'private equity' },
+            { th: 'เงินทุนเสี่ยง', en: 'venture capital' },
+            { th: 'สินค้าโภคภัณฑ์', en: 'commodities' },
+            { th: 'ทอง', en: 'gold' },
+            { th: 'เงิน', en: 'silver' },
+            { th: 'น้ำมัน', en: 'oil' },
+            { th: 'คริปโต', en: 'crypto' },
+            { th: 'บิตคอยน์', en: 'bitcoin' },
+            { th: 'อีเธอเรียม', en: 'ethereum' },
+            { th: 'บล็อกเชน', en: 'blockchain' },
+            
+            // Banking Terms
+            { th: 'ธนาคาร', en: 'bank' },
+            { th: 'บัญชีเงินฝาก', en: 'checking account' },
+            { th: 'บัญชีออมทรัพย์', en: 'savings account' },
+            { th: 'บัญชีตลาดเงิน', en: 'money market account' },
+            { th: 'ใบรับรองเงินฝาก', en: 'certificate of deposit' },
+            { th: 'การโอนเงิน', en: 'transfer' },
+            { th: 'การถอนเงิน', en: 'withdrawal' },
+            { th: 'การฝากเงิน', en: 'deposit' },
+            { th: 'ยอดคงเหลือ', en: 'balance' },
+            { th: 'วงเงิน', en: 'credit limit' },
+            { th: 'การอนุมัติ', en: 'approval' },
+            { th: 'การปฏิเสธ', en: 'rejection' },
+            
+            // Insurance Terms
+            { th: 'ประกันชีวิต', en: 'life insurance' },
+            { th: 'ประกันสุขภาพ', en: 'health insurance' },
+            { th: 'ประกันรถยนต์', en: 'auto insurance' },
+            { th: 'ประกันบ้าน', en: 'home insurance' },
+            { th: 'ประกันทรัพย์สิน', en: 'property insurance' },
+            { th: 'ประกันทุพพลภาพ', en: 'disability insurance' },
+            { th: 'การดูแลระยะยาว', en: 'long term care' },
+            { th: 'เบี้ยประกัน', en: 'premium' },
+            { th: 'ค่าลดหย่อน', en: 'deductible' },
+            { th: 'ความคุ้มครอง', en: 'coverage' },
+            { th: 'กรมธรรม์', en: 'policy' },
+            { th: 'การเรียกร้อง', en: 'claim' },
+            { th: 'ผู้รับผลประโยชน์', en: 'beneficiary' },
+            
+            // Tax Terms
+            { th: 'ภาษีเงินได้', en: 'income tax' },
+            { th: 'ภาษีทรัพย์สิน', en: 'property tax' },
+            { th: 'ภาษีมูลค่าเพิ่ม', en: 'sales tax' },
+            { th: 'กำไรจากการขาย', en: 'capital gains' },
+            { th: 'การลดหย่อนภาษี', en: 'tax deduction' },
+            { th: 'เครดิตภาษี', en: 'tax credit' },
+            { th: 'เงินคืนภาษี', en: 'tax refund' },
+            { th: 'ช่วงภาษี', en: 'tax bracket' },
+            { th: 'ภาษีส่วนเพิ่ม', en: 'marginal tax' },
+            { th: 'อัตราภาษีที่แท้จริง', en: 'effective tax rate' },
+            { th: 'การวางแผนภาษี', en: 'tax planning' },
+            { th: 'การเตรียมภาษี', en: 'tax preparation' },
+            { th: 'การยื่นภาษี', en: 'tax filing' },
+            
+            // Retirement Terms
+            { th: 'กองทุนสำรองเลี้ยงชีพ', en: 'pension' },
+            { th: '401k', en: '401k' },
+            { th: 'ira', en: 'ira' },
+            { th: 'roth ira', en: 'roth ira' },
+            { th: 'เงินรายปี', en: 'annuity' },
+            { th: 'ประกันสังคม', en: 'social security' },
+            { th: 'การวางแผนการเกษียณ', en: 'retirement planning' },
+            { th: 'การออมเพื่อการเกษียณ', en: 'retirement savings' },
+            { th: 'รายได้การเกษียณ', en: 'retirement income' },
+            { th: 'การถอนเงิน', en: 'withdrawal' },
+            { th: 'การแจกจ่ายขั้นต่ำที่จำเป็น', en: 'required minimum distribution' },
+            { th: 'การเกษียณก่อนกำหนด', en: 'early retirement' },
+            { th: 'อายุเกษียณ', en: 'retirement age' },
+            { th: 'สวัสดิการ', en: 'benefits' },
+            
+            // Real Estate Terms
+            { th: 'การซื้อบ้าน', en: 'home buying' },
+            { th: 'การขายบ้าน', en: 'home selling' },
+            { th: 'การจำนอง', en: 'mortgage' },
+            { th: 'เงินกู้บ้าน', en: 'home loan' },
+            { th: 'เงินดาวน์', en: 'down payment' },
+            { th: 'ค่าธรรมเนียมปิด', en: 'closing costs' },
+            { th: 'มูลค่าทรัพย์สิน', en: 'property value' },
+            { th: 'การประเมิน', en: 'appraisal' },
+            { th: 'การตรวจสอบบ้าน', en: 'home inspection' },
+            { th: 'การค้นหาสิทธิ์', en: 'title search' },
+            { th: 'การฝากเงิน', en: 'escrow' },
+            { th: 'การปิด', en: 'closing' },
+            { th: 'นายหน้าอสังหาริมทรัพย์', en: 'real estate agent' },
+            { th: 'นายหน้า', en: 'realtor' },
+            { th: 'นายหน้า', en: 'broker' },
+            { th: 'รายการขาย', en: 'listing' },
+            { th: 'บ้านเปิด', en: 'open house' },
+            { th: 'การแสดง', en: 'showing' },
+            { th: 'ข้อเสนอ', en: 'offer' },
+            { th: 'การต่อรอง', en: 'negotiation' },
+            { th: 'สัญญา', en: 'contract' },
+            { th: 'ข้อตกลงซื้อ', en: 'purchase agreement' },
+            { th: 'เงื่อนไข', en: 'contingency' },
+            { th: 'การรับประกันบ้าน', en: 'home warranty' },
+            { th: 'สมาคมเจ้าของบ้าน', en: 'homeowners association' },
+            { th: 'การบำรุงรักษา', en: 'maintenance' }
         ]
         
         popularKeywords.forEach(keyword => {
