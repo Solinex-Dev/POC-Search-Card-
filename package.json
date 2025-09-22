@@ -9,8 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist",
+    "deploy:github": "npm run build && gh-pages -d dist",
     "deploy:vercel": "vercel --prod",
     "deploy:vercel:preview": "vercel",
+    "deploy:all": "npm run deploy:github && npm run deploy:vercel",
     "build:analyze": "npm run build && npx vite-bundle-analyzer dist/stats.html",
     "predeploy": "npm run lint && npm run build"
   },
